@@ -13,8 +13,7 @@ class Residential(pd.DataFrame):
     The `Residential` class is a data frame that contains the collected
     building loads for each residential building types, aggregated by load
     category, i.e., `baseload`,`cooling`, `heating`, `dg`, and `total` for
-    both electric and non-electric loads.  Values are delivered both in MW
-    and per-unit total load for each load category.
+    both electric and non-electric loads.  Values are delivered both in MW.
     """
     COLLECT = {
             "elec_baseload": [
@@ -146,16 +145,30 @@ class Residential(pd.DataFrame):
                 total_units += units[btype]
         data = pd.DataFrame(data)
 
+        # prepare consolidation columns
+        for ctype in collect.keys():
+            data[f"{ctype}_MW"] = 0.0
+
         # scale by number of residential units and calculate fractional loads
         actual_units = Units(state=state,county=county,year=year)
+
         for btype in RESstock.BUILDING_TYPES:
+
+            # collect building type data
             for ctype in {x.split("_",1)[0] for x in collect.keys()}:
                 for kwname in [x for x in data.columns if x.startswith(f"{btype}_{ctype}_")]:
-                    puname = kwname.replace("_MW","_pu")
                     totname = f"{btype}_{ctype}_total_MW"
                     pu = (data[kwname] / data[totname]).fillna(0.0)
                     data[kwname] *= units[btype] / total_units * actual_units
-                    data[puname] = pu
+
+            # consolidate building type data
+            for ctype in collect.keys():
+                data[f"{ctype}_MW"] += data[f"{btype}_{ctype}_MW"]
+                data.drop(f"{btype}_{ctype}_MW",axis=1,inplace=True)
+
+        # update net total with DG
+        data["elec_net_MW"] = data["elec_total_MW"] + data["elec_dg_MW"]
+        data.drop("nonelec_dg_MW",axis=1,inplace=True)
 
         super().__init__(data[sorted(data.columns)])
 
