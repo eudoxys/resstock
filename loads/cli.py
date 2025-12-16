@@ -31,8 +31,9 @@ Caveats:
 import sys
 import argparse
 import warnings
+
 import pandas as pd
-import datetime as dt
+
 # pylint: disable=unused-import
 from loads.resstock import RESstock
 from loads.residential import Residential
@@ -52,7 +53,7 @@ def main(*args:list[str]) -> int:
 
         - `int`: return/exit code
     """
-    # pylint: disable=too-many-return-statements
+    # pylint: disable=too-many-return-statements,too-many-branches
     try:
 
         # support direct call to main

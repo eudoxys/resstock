@@ -1,14 +1,9 @@
 """Residential building load model"""
-import os
-import sys
-import datetime as dt
-import pytz
-import urllib
-import warnings
+
 import pandas as pd
-import requests
+
 from fips.states import States
-from fips.counties import Counties, County
+from fips.counties import Counties
 from loads.units import Units # normal usage
 from loads.resstock import RESstock
 
@@ -21,11 +16,7 @@ class Residential(pd.DataFrame):
     both electric and non-electric loads.  Values are delivered both in MW
     and per-unit total load for each load category.
     """
-    def __init__(self,
-        state:str,
-        county:str,
-        freq:str="1h",
-        collect={
+    COLLECT = {
             "elec_baseload": [
                 "elec_bathfan",
                 "elec_ceilingfan",
@@ -99,8 +90,15 @@ class Residential(pd.DataFrame):
                 "lng_total",
                 "wood_total",
                 ],
-            },
-            year:int=None,
+            }
+
+    def __init__(self,
+        # pylint: disable=too-many-arguments,too-many-positional-arguments
+        state:str,
+        county:str,
+        freq:str="1h",
+        collect=None,
+        year:int=None,
         ):
         """Construct building types data frame
 
@@ -122,9 +120,14 @@ class Residential(pd.DataFrame):
         and finally computing total MW and the fraction of total of electric
         or non-electric load.
         """
+        # pylint: disable=too-many-locals
         assert state in States()["ST"].values, f"{state=} is not valid"
         assert county in Counties().set_index(["ST","COUNTY"]).loc[state].index, \
             f"{state=} {county=} is not valid"
+
+        if collect is None:
+            collect = self.COLLECT
+            
         units = {}
         total_units = 0.0
         data = {}
@@ -146,7 +149,7 @@ class Residential(pd.DataFrame):
         # scale by number of residential units and calculate fractional loads
         actual_units = Units(state=state,county=county,year=year)
         for btype in RESstock.BUILDING_TYPES:
-            for ctype in set([x.split("_",1)[0] for x in collect.keys()]):
+            for ctype in {x.split("_",1)[0] for x in collect.keys()}:
                 for kwname in [x for x in data.columns if x.startswith(f"{btype}_{ctype}_")]:
                     puname = kwname.replace("_MW","_pu")
                     totname = f"{btype}_{ctype}_total_MW"
@@ -156,9 +159,6 @@ class Residential(pd.DataFrame):
 
         super().__init__(data[sorted(data.columns)])
 
-    def __getattr__(self,item):
-        return self.data[item]
-
     @classmethod
     def makeargs(cls,**kwargs):
         """Return dict of accepted kwargs by this class constructor"""
@@ -166,9 +166,8 @@ class Residential(pd.DataFrame):
             if x in cls.__init__.__annotations__}
 
 if __name__ == '__main__':
-    
+
     pd.options.display.width = None
     pd.options.display.max_columns = None
-    
-    print(Residential(state="CA",county="Alameda"))
 
+    print(Residential(state="CA",county="Alameda"))

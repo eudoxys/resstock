@@ -3,14 +3,14 @@
 import os
 import sys
 import datetime as dt
-import pytz
 import urllib
 import warnings
+
+import pytz
 import pandas as pd
-import requests
+
 from fips.states import States
-from fips.counties import Counties, County
-from loads.units import Units # normal usage
+from fips.counties import County
 
 def _float(s,default=0.0):
     try:
@@ -29,6 +29,7 @@ class RESstock(pd.DataFrame):
     in the RESstock model, which may not be accurately reflect the actual
     number of units in any given year.
     """
+    # pylint: disable=invalid-name,too-many-locals
     CACHEDIR = None
     COLUMNS = {
         "out.electricity.bath_fan.energy_consumption": "elec_bathfan",
@@ -130,7 +131,8 @@ class RESstock(pd.DataFrame):
 
             # download data to cache
             root = "https://oedi-data-lake.s3.amazonaws.com/nrel-pds-building-stock/" \
-                "end-use-load-profiles-for-us-building-stock/2021/resstock_amy2018_release_1/timeseries_aggregates"
+                "end-use-load-profiles-for-us-building-stock/2021/"\
+                "resstock_amy2018_release_1/timeseries_aggregates"
             btype = self.BUILDING_TYPES[building_type]
             if county is None:
                 url = f"{root}/by_state/state={state.upper()}/{state.lower()}-{btype}.csv"
@@ -140,14 +142,15 @@ class RESstock(pd.DataFrame):
             try:
                 data = pd.read_csv(url)
             except urllib.error.HTTPError as err:
-                print(f"ERROR [RESstock]: {url=}",file=sys.stderr)
-                raise 
+                print(f"ERROR [RESstock]: {url=} ({err})",file=sys.stderr)
+                raise
             data.to_csv(cache,compression="gzip" if cache.endswith(".gz") else None)
-        
+
         # load data from cache
         data = pd.read_csv(cache,dtype=str,na_filter=False,low_memory=False)
         data.set_index(["timestamp"],inplace=True)
-        data.index = (pd.DatetimeIndex(data.index,tz=pytz.timezone("EST")) - dt.timedelta(minutes=15)).tz_convert(pytz.UTC)
+        data.index = (pd.DatetimeIndex(data.index,tz=pytz.timezone("EST")) \
+            - dt.timedelta(minutes=15)).tz_convert(pytz.UTC)
 
         # capture number of housing units
         units = data["units_represented"].astype(float)
@@ -157,7 +160,7 @@ class RESstock(pd.DataFrame):
 
         # restructure data
         data.drop([x for x in data.columns if x not in self.COLUMNS],inplace=True,axis=1)
-        data.rename({x:y for x,y in self.COLUMNS.items()},inplace=True,axis=1)
+        data.rename(self.COLUMNS,inplace=True,axis=1)
         for value in self.COLUMNS.values():
             data[value] = [_float(x)/units*1000 for x in data[value]]
 
@@ -177,9 +180,8 @@ class RESstock(pd.DataFrame):
             if x in cls.__init__.__annotations__}
 
 if __name__ == '__main__':
-    
+
     pd.options.display.width = None
     pd.options.display.max_columns = None
-    
-    print(RESstock(state="CA",county="Alameda",building_type="RSFD"))
 
+    print(RESstock(state="CA",county="Alameda",building_type="RSFD"))

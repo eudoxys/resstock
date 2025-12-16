@@ -6,27 +6,40 @@ See https://www.census.gov/data/tables/time-series/demo/popest/2020s-total-housi
 
 import os
 import sys
+import warnings
 import socket
+
 import pandas as pd
+
 from fips.states import State, States
 from fips.counties import Counties
 
+# pylint: disable=redefined-outer-name
 class Units(float):
-
+    """Class to contain the number of residential units in a county for a year"""
     CACHEDIR = None
 
-    def __new__(self,
+    def __new__(cls,
         state:str,
         county:str=None,
         year:str=None,
         ):
-        """Load housing units from Census Bureau"""
+        """Load housing units from Census Bureau
 
-        if self.CACHEDIR is None:
-            self.CACHEDIR = os.path.join(os.path.dirname(__file__),".cache")
-        os.makedirs(self.CACHEDIR,exist_ok=True)
-        
-        cache = os.path.join(self.CACHEDIR,f"{state}_housing_units.csv")
+        Arguments:
+
+            - `state`: state for which to read data
+
+            - `county`: county for which to read data (default entire state)
+
+            - `year`: year for which to read data (default most recent)
+        """
+
+        if cls.CACHEDIR is None:
+            cls.CACHEDIR = os.path.join(os.path.dirname(__file__),".cache")
+        os.makedirs(cls.CACHEDIR,exist_ok=True)
+
+        cache = os.path.join(cls.CACHEDIR,f"{state}_housing_units.csv")
 
         if not os.path.exists(cache):
 
@@ -69,21 +82,22 @@ class Units(float):
             row = [x for x in data.index if x.startswith(f".{county}")]
 
         result = data.loc[row,year].values
-        if len(result) == 1:
-            return result[0]
-        else:
+        if len(result) != 1:
+            warnings.warn(f"Units({state=},{county=},{year=}) "\
+                f"did not result in a single value ({result=})")
             return float('nan')
+        return result[0]
 
 if __name__ == '__main__':
 
     pd.options.display.width = None
     pd.options.display.max_rows = None
     pd.options.display.max_columns = None
-    
+
     for _,state in States().iterrows():
         print("***",state.ST,f"({state.FIPS})","***",flush=True)
         for _,county in Counties(state.ST).iterrows():
             try:
-                print(county.COUNTY,f"{state.ST}:",Units(state.ST,county.COUNTY),flush=True)
+                print(county.COUNTY,f"{state.ST}:",Units(state.ST,county.COUNTY),flush=True,file=sys.stdout)
             except Exception as err:
-                print(f"ERROR [{county.COUNTY} {state.ST}]: {err}",flush=True)
+                print(f"ERROR [{county.COUNTY} {state.ST}]: {err}",flush=True,file=sys.stderr)
