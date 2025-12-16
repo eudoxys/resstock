@@ -1,6 +1,6 @@
 [![validate](https://github.com/eudoxys/loads/actions/workflows/validate.yaml/badge.svg)](https://github.com/eudoxys/loads/actions/workflows/validate.yaml)
 
-RESstock data accessor and residential load data tool
+Electric loads data accessor and multi-sector load data tool
 
 # Documentation
 
