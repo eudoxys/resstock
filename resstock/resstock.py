@@ -116,15 +116,18 @@ class RESstock(pd.DataFrame):
 
             - `freq`: specifies the sampling interval (None for raw sampling)
         """
-        assert building_type in self.BUILDING_TYPES, f"{building_type=} is not one of {self.BUILDING_TYPES}"
+        assert building_type in self.BUILDING_TYPES, \
+            f"{building_type=} is not one of {self.BUILDING_TYPES}"
 
 
         if self.CACHEDIR is None:
             self.CACHEDIR = os.path.join(os.path.dirname(__file__),".cache")
         os.makedirs(self.CACHEDIR,exist_ok=True)
-        
+
         # check cache
-        file = f"{state}_{building_type}.csv.gz" if county is None else f"{state}_{county}_{building_type}.csv.gz"
+        file = f"{state}_{building_type}.csv.gz" \
+            if county is None \
+            else f"{state}_{county}_{building_type}.csv.gz"
         cache = os.path.join(self.CACHEDIR,file.replace(" ","-"))
         if not os.path.exists(cache):
 
@@ -328,6 +331,6 @@ if __name__ == '__main__':
     pd.options.display.width = None
     pd.options.display.max_columns = None
     
-    # print(RESstock(state="CA",building_type="RSFD"))
+    print(RESstock(state="CA",county="Alameda",building_type="RSFD"))
     print(Residential(state="CA",county="Alameda"))
 
