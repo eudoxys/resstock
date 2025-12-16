@@ -9,4 +9,5 @@ Exapmle:
     resstock CA Alameda
 """
 from resstock.cli import main
-from resstock.resstock import RESstock
+from resstock.resstock import RESstock, Residential
+from resstock.units import Units

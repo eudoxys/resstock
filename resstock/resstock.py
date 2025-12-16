@@ -9,7 +9,11 @@ import warnings
 import pandas as pd
 import requests
 from fips.states import States
-from fips.counties import County
+from fips.counties import Counties, County
+try:
+    from .units import Units # normal usage
+except ImportError:
+    from units import Units # only for developers
 
 def _float(s,default=0.0):
     try:
@@ -25,8 +29,8 @@ class RESstock(pd.DataFrame):
     maps the RESstock data to the data frame columns. The values are given in
     average Watts per housing unit. The number of units from RESstock is
     given by the `units` column. Note that the number of units is that used
-    in the RESstock model, and may not be accurately reflect the number of
-    units in any given year.
+    in the RESstock model, which may not be accurately reflect the actual
+    number of units in any given year.
     """
     CACHEDIR = None
     COLUMNS = {
@@ -157,6 +161,8 @@ class RESstock(pd.DataFrame):
         for value in self.COLUMNS.values():
             data[value] = [_float(x)/units*1000 for x in data[value]]
 
+        data["units"] = units
+
         # resample if necessary
         if freq is None:
             super().__init__(data)
@@ -170,15 +176,158 @@ class RESstock(pd.DataFrame):
         return {x:y for x,y in kwargs.items()
             if x in cls.__init__.__annotations__}
 
+class Residential(pd.DataFrame):
+    """Residential building data frame class
+
+    The `Residential` class is a data frame that contains the collected
+    building loads for each residential building types, aggregated by load
+    category, i.e., `baseload`,`cooling`, `heating`, `dg`, and `total` for
+    both electric and non-electric loads.  Values are delivered both in MW
+    and per-unit total load for each load category.
+    """
+    def __init__(self,
+        state:str,
+        county:str,
+        freq:str="1h",
+        collect={
+            "elec_baseload": [
+                "elec_bathfan",
+                "elec_ceilingfan",
+                "elec_dryer",
+                "elec_washer",
+                "elec_cooking",
+                "elec_dishwasher",
+                "elec_holidaylight",
+                "elec_extlighting",
+                "elec_extrarefrigerator",
+                "elec_freezer",
+                "elec_garagelighting",
+                "elec_hottubheater",
+                "elec_hottubpump",
+                "elec_housefan",
+                "elec_interiorlighting",
+                "elec_plugs",
+                "elec_poolheater",
+                "elec_poolpump",
+                "elec_rangefan",
+                "elec_recircpump",
+                "elec_refrigerator",
+                "elec_vehicle",
+                "elec_watersystems",
+                "elec_wellpump",
+                ],
+            "elec_cooling": [
+                "elec_cooling",
+                "elec_coolingfan",
+                "elec_coolingpump",
+                ],
+            "elec_heating": [
+                "elec_heating",
+                "elec_heatingfan",
+                "elec_heatingsupplement",
+                "elec_heatingpump",
+                ],
+            "elec_dg":[
+                "elec_pv",
+                ],
+            "elec_total": [
+                "elec_total",
+                ],
+            "nonelec_baseload": [
+                "oil_watersystems",
+                "gas_dryer",
+                "gas_cooking",
+                "gas_grill",
+                "gas_hottubheater",
+                "gas_lighting",
+                "gas_poolheater",
+                "lng_dryer",
+                "lng_range",
+                "lng_watersystems",
+                ],
+            "nonelec_cooling": [
+                ],
+            "nonelec_heating": [
+                "oil_heating",
+                "gas_fireplace",
+                "gas_heating",
+                "gas_watersystems",
+                "lng_heating",
+                "wood_heating",
+                ],
+            "nonelec_dg": [
+                ],
+            "nonelec_total": [
+                "oil_total",
+                "gas_total",
+                "lng_total",
+                "wood_total",
+                ],
+            },
+            year:int=None,
+        ):
+        """Construct building types data frame
+
+        Arguments:
+
+            - `state`: specify the state abbreviation (required)
+
+            - `county`: specify the county name (required)
+
+            - `freq`: specify the data sampling frequency (default is "1h"")
+
+            - `collect`: specify how RESstock columns are collected
+
+            - `year`: specify the year on which the number of housing units is
+              based (default most recent in `Units()`)
+
+        This class compiles the building type data for a county by collecting
+        RESstock columns, scaling by the number of housing units in that year,
+        and finally computing total MW and the fraction of total of electric
+        or non-electric load.
+        """
+        assert state in States()["ST"].values, f"{state=} is not valid"
+        assert county in Counties().set_index(["ST","COUNTY"]).loc[state].index, \
+            f"{state=} {county=} is not valid"
+        units = {}
+        total_units = 0.0
+        data = {}
+
+        # collect building type data
+        for btype in RESstock.BUILDING_TYPES:
+            bdata = RESstock(
+                state=state,
+                county=county,
+                building_type=btype,
+                freq=freq,
+                )
+            for aggr,columns in collect.items():
+                data[f"{btype}_{aggr}_MW"] = bdata[columns].sum(axis=1) / 1e6
+                units[btype] = bdata["units"].max()
+                total_units += units[btype]
+        data = pd.DataFrame(data)
+
+        # scale by number of residential units and calculate fractional loads
+        actual_units = Units(state=state,county=county,year=year)
+        for btype in RESstock.BUILDING_TYPES:
+            for ctype in set([x.split("_",1)[0] for x in collect.keys()]):
+                for kwname in [x for x in data.columns if x.startswith(f"{btype}_{ctype}_")]:
+                    puname = kwname.replace("_MW","_pu")
+                    totname = f"{btype}_{ctype}_total_MW"
+                    pu = (data[kwname] / data[totname]).fillna(0.0)
+                    data[kwname] *= units[btype] / total_units * actual_units
+                    data[puname] = pu
+
+        super().__init__(data[sorted(data.columns)])
+
+    def __getattr__(self,item):
+        return self.data[item]
+
 if __name__ == '__main__':
     
     pd.options.display.width = None
-    pd.options.display.max_rows = None
     pd.options.display.max_columns = None
     
-    total = 0
-    for btype in RESstock.BUILDING_TYPES:
-        count = RESstock("CA","Alameda",building_type=btype)
-        print(f"CA Alameda {btype}:",count)
-        total += count
-    print(f"CA Alameda:",total)
+    # print(RESstock(state="CA",building_type="RSFD"))
+    print(Residential(state="CA",county="Alameda"))
+

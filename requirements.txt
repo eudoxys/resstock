@@ -1,4 +1,4 @@
 pandas
 openpyxl
 requests
-git+https://github.com/eudoxys/fips
+fips @ git+https://github.com/eudoxys/fips
