@@ -27,7 +27,7 @@ jobs:
     - name: Analyse code
       run: |
         pip install pylint
-        cd resstock
+        cd loads
         pylint --fail-under 9 *.py
 
     - name: Run tests

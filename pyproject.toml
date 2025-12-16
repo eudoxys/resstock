@@ -3,15 +3,15 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.package-data]
-resstock = ["*.py"]
+loads = ["*.py"]
 
 [tool.setuptools.dynamic]
 dependencies = {file=["requirements.txt"]}
 
 [project]
-name = "resstock"
+name = "loads"
 version = "0.0.0"
-description = "EIA Form data accessor"
+description = "US electric load model"
 authors = [
     {name = "David P. Chassin <dchassin@eudoxys.com>"},
     ]
@@ -20,7 +20,7 @@ maintainers = [
     ]
 readme = "README.md"
 requires-python = ">= 3.11"
-keywords = ["github","python","EIA","Form"]
+keywords = ["github","python","US","electricity","load","demand","model"]
 license = {text="MIT License"}
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -32,10 +32,10 @@ classifiers = [
 dynamic=["dependencies"]
 
 [project.urls]
-Homepage = "https://github.com/eudoxys/resstock"
-Documentation = "https://www.eudoxys.com/resstock"
-Repository = "https://github.com/eudoxys/resstock.git"
-Issues = "https://github.com/eudoxys/resstock/issues"
+Homepage = "https://github.com/eudoxys/loads"
+Documentation = "https://www.eudoxys.com/loads"
+Repository = "https://github.com/eudoxys/loads.git"
+Issues = "https://github.com/eudoxys/loads/issues"
 
 [project.scripts]
-resstock = "resstock.cli:main"
+loads = "loads.cli:main"
