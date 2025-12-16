@@ -1,14 +1,14 @@
-[![validate](https://github.com/eudoxys/resstock/actions/workflows/validate.yaml/badge.svg)](https://github.com/eudoxys/resstock/actions/workflows/validate.yaml)
+[![validate](https://github.com/eudoxys/loads/actions/workflows/validate.yaml/badge.svg)](https://github.com/eudoxys/loads/actions/workflows/validate.yaml)
 
 RESstock data accessor and residential load data tool
 
 # Documentation
 
-See https://www.eudoxys.com/resstock
+See https://www.eudoxys.com/loads
 
 # Installation
 
-    pip install git+https://github.com/eudoxys/resstock
+    pip install git+https://github.com/eudoxys/loads
 
 # Examples
 
@@ -16,20 +16,20 @@ See https://www.eudoxys.com/resstock
 
 Get the raw RESstock data
 
-    resstock --raw CA Alameda
+    loads --raw CA Alameda
 
 Save the residential load data to cSV
 
-    resstock CA Alameda -o CA-Alameda.csv
+    loads CA Alameda -o CA-Alameda.csv
 
 ## Python code
 
 Get the RESstock data frame for Alameda County CA.
 
-    from resstock import RESstock
+    from loads import RESstock
     print(RESstock(state="CA",county="Alameda",building_type="RSFD"))
 
 Get the residential building loads data frame for Alameda County CA.
 
-    from resstock import Residential
+    from loads import Residential
     print(Residential(state="CA",county="Alameda"))
