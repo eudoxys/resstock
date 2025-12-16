@@ -2,12 +2,13 @@
 
 Usage:
 
-    resstock [-h] [-o OUTPUT] FORM
+    loads [-h] [-o OUTPUT] FORM
 
 Exapmle:
 
-    resstock CA Alameda
+    loads CA Alameda
 """
-from resstock.cli import main
-from resstock.resstock import RESstock, Residential
-from resstock.units import Units
+from loads.cli import main
+from loads.resstock import RESstock
+from loads.residential import Residential
+from loads.units import Units

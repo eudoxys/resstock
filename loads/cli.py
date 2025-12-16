@@ -1,11 +1,41 @@
-"""RESstock data accessor"""
+"""RESstock data accessor
+
+Generates electric load model for residential, commercial, industrial,
+agricultural, and public sectors. Two types of data frame are generated
+depending on whether `building_type` is specified.
+
+If `building_type` is specified, then the raw end-use data for that building
+type is returned, the columns of which depend on the building type.  If
+`building_type` is not specified, then the compiled end-use data for the
+entire sector is returned, with the contribution from each building type in
+columns of MW and per-unit total for electric and non-electric base, cooling,
+heating, and total loads.
+
+Examples:
+
+To print the raw residential single-family detached house loads in Alameda
+County CA as a table.
+
+    loads CA Alameda residential --building_type=RSFD
+
+To get the compiled residential loads in Alameda County CA in CSV format
+
+    loads CA Alameda residential --format=csv
+
+Caveats:
+
+* Compiling data can be time consuming. To help with performance data is cached
+  locally in the package library. However, 
+"""
 
 import sys
 import argparse
 import warnings
 import pandas as pd
+import datetime as dt
 # pylint: disable=unused-import
-from resstock.resstock import RESstock
+from loads.resstock import RESstock
+from loads.residential import Residential
 
 E_OK = 0
 E_FAILED = 1
@@ -36,24 +66,31 @@ def main(*args:list[str]) -> int:
             epilog="See https://www.eudoxys.com/resstock for documentation. ",
             )
         parser.add_argument("state")
-        parser.add_argument("county",required=False)
+        parser.add_argument("county")
+        parser.add_argument("sector",
+            choices=["residential","commercial","industrial","agricultural","public"]
+            )
+        parser.add_argument("-y","--year",
+            type=int,
+            help="set load model year")
         parser.add_argument("-o","--output",
             help="set output file name")
-        parser.add_argument("--raw",
-            action='store_true',
-            help="access raw RESstock data")
-        parser.add_argument("--refresh",
-            action='store_true',
-            help="refresh local cache data")
+        parser.add_argument("--building_type",
+            help="access raw building type stock data")
+        parser.add_argument("--format",
+            choices=["csv","gzip","zip","xlsx"],
+            help="specify output format")
+        parser.add_argument("--precision",
+            type=int,
+            default=3,
+            help="specify output precision"
+            )
         parser.add_argument("--warning",
             action="store_true",
             help="enable warning messages from python")
         parser.add_argument("--debug",
             action="store_true",
             help="enable debug traceback on exceptions")
-        parser.add_argument("--format",
-            choices=["csv","gzip","zip","xlsx"],
-            help="specify output format")
 
         # parse arguments
         args = parser.parse_args()
@@ -67,20 +104,26 @@ def main(*args:list[str]) -> int:
                 file=sys.stderr,
                 )
 
-        # handle help request
-        if args.form == "help":
-            print(__doc__)
-            return E_OK
-
         # get data
-        data = RESstock(**form.makeargs(**kwargs))
+        match args.sector:
+            case "residential":
+                source = (RESstock if args.building_type else Residential)
+                kwargs = source.makeargs(**vars(args))
+                data = source(**kwargs).round(args.precision)
+            case "_":
+                raise ValueError(f"{args.sector=} is invalid")
 
         # handle default output
         if args.output is None:
-            pd.options.display.max_rows = None
-            pd.options.display.width = None
-            pd.options.display.max_columns = None
-            print(data)
+            if args.format is None:
+                pd.options.display.max_rows = None
+                pd.options.display.width = None
+                pd.options.display.max_columns = None
+                print(data)
+            elif args.format == "csv":
+                print(data.to_csv())
+            else:
+                raise ValueError(f"{args.format} if not valid for this output stream")
             return E_OK
 
         # handle CSV output
@@ -113,11 +156,12 @@ def main(*args:list[str]) -> int:
         if getattr(args,"debug"):
             raise
 
-        print(f"ERROR [eia]: {err}")
+        print(f"ERROR [loads]: {err}")
         return E_FAILED
 
 if __name__ == '__main__':
     pd.options.display.width = None
     pd.options.display.max_columns = None
     pd.options.display.max_rows = None
-    print(main("CA"))
+    print(main("CA","Alameda","residential","--building_type=RSFD"))
+    print(main("CA","Alameda","residential","--format=csv"))
