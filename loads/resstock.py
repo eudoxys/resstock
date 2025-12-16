@@ -28,6 +28,11 @@ class RESstock(pd.DataFrame):
     given by the `units` column. Note that the number of units is that used
     in the RESstock model, which may not be accurately reflect the actual
     number of units in any given year.
+
+    Residental building types are coded using three characters `R` for
+    residential, `{'SA','SD','SM','LM','MH'}` for single-family attached,
+    single-family detached, small multi-family, large multi-family, and
+    mobile-home.
     """
     # pylint: disable=invalid-name,too-many-locals
     CACHEDIR = None
@@ -88,13 +93,14 @@ class RESstock(pd.DataFrame):
         "out.wood.total.energy_consumption": "wood_total",
     }
     BUILDING_TYPES = {
-        "RSFD": "single-family_detached",
-        "RSFA": "single-family_attached",
-        "RMFS": "multi-family_with_2_-_4_units",
-        "RMFM": "multi-family_with_5plus_units",
+        "RSD": "single-family_detached",
+        "RSA": "single-family_attached",
+        "RSM": "multi-family_with_2_-_4_units",
+        "RLM": "multi-family_with_5plus_units",
         "RMH": "mobile_home",
     }
     STATES = States().values.tolist()
+
     def __init__(self,
         state:str,
         county:str=None,
@@ -116,7 +122,6 @@ class RESstock(pd.DataFrame):
         """
         assert building_type in self.BUILDING_TYPES, \
             f"{building_type=} is not one of {self.BUILDING_TYPES}"
-
 
         if self.CACHEDIR is None:
             self.CACHEDIR = os.path.join(os.path.dirname(__file__),".cache")
@@ -142,8 +147,21 @@ class RESstock(pd.DataFrame):
             try:
                 data = pd.read_csv(url)
             except urllib.error.HTTPError as err:
-                print(f"ERROR [RESstock]: {url=} ({err})",file=sys.stderr)
-                raise
+
+                # download error (most likely no data in RESstock)
+                warnings.warn(f"RESstock building type '{btype}' has no data ({err})")
+
+                # create all zeros dataframe
+                ndx = pd.date_range(
+                    start="2018-01-01 05:00:00+00:00",
+                    end="2019-01-01 04:00:00+00:00",
+                    freq=freq)
+                zeros = [0.0]*len(ndx)
+                data = pd.DataFrame(data={x:zeros for x in self.COLUMNS},index=ndx)
+                data.index.name = "timestamp"
+                data.reset_index(inplace=True)
+                data["units_represented"] = 0.0
+
             data.to_csv(cache,compression="gzip" if cache.endswith(".gz") else None)
 
         # load data from cache
@@ -184,4 +202,7 @@ if __name__ == '__main__':
     pd.options.display.width = None
     pd.options.display.max_columns = None
 
-    print(RESstock(state="CA",county="Alameda",building_type="RSFD"))
+    for bt in RESstock.BUILDING_TYPES:
+        print("Building type",bt,flush=True)
+        print(RESstock(state="CA",building_type=bt))
+        print(RESstock(state="CA",county="Alameda",building_type=bt))
