@@ -2,7 +2,7 @@
 
 import sys
 import pandas as pd
-from resstock import Residential, RESstock
+from loads import Residential, RESstock
 
 state = "CA"
 county = "Alameda"
