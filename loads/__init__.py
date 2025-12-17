@@ -14,3 +14,4 @@ from loads.residential import Residential
 from loads.comstock import COMstock
 from loads.units import Units
 from loads.floorarea import Floorarea
+from loads.weather import Weather
