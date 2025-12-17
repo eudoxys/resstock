@@ -96,7 +96,7 @@ class RESstock(pd.DataFrame):
         "RSD": "single-family_detached",
         "RSA": "single-family_attached",
         "RSM": "multi-family_with_2_-_4_units",
-        "RLM": "multi-family_with_5plus_units",
+        "RMM": "multi-family_with_5plus_units",
         "RMH": "mobile_home",
     }
     STATES = States().values.tolist()

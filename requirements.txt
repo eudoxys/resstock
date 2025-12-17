@@ -1,5 +1,6 @@
 pandas
 openpyxl
+pyxlsb
 requests
 pytz
 fips @ git+https://github.com/eudoxys/fips

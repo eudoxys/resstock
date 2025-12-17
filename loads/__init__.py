@@ -13,3 +13,4 @@ from loads.resstock import RESstock
 from loads.residential import Residential
 from loads.comstock import COMstock
 from loads.units import Units
+from loads.floorarea import Floorarea
