@@ -119,6 +119,7 @@ class Residential(pd.DataFrame):
                 "wood_total",
                 ],
             }
+    """Mapping of `RESstock` columns to `Residential` columns"""
 
     def __init__(self,
         # pylint: disable=too-many-arguments,too-many-positional-arguments
@@ -209,7 +210,3 @@ class Residential(pd.DataFrame):
         """Return dict of accepted kwargs by this class constructor"""
         return {x:y for x,y in kwargs.items()
             if x in cls.__init__.__annotations__}
-
-if __name__ == '__main__':
-
-    print(Residential(state="CA",county="Alameda"))

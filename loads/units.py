@@ -18,6 +18,7 @@ from fips.counties import Counties
 class Units(float):
     """Class to contain the number of residential units in a county for a year"""
     CACHEDIR = None
+    """Cache folder path (`None` is package source folder)"""
 
     def __new__(cls,
         state:str,
@@ -87,17 +88,3 @@ class Units(float):
                 f"did not result in a single value ({result=})")
             return float('nan')
         return result[0]
-
-if __name__ == '__main__':
-
-    pd.options.display.width = None
-    pd.options.display.max_rows = None
-    pd.options.display.max_columns = None
-
-    for _,state in States().iterrows():
-        print("***",state.ST,f"({state.FIPS})","***",flush=True)
-        for _,county in Counties(state.ST).iterrows():
-            try:
-                print(county.COUNTY,f"{state.ST}:",Units(state.ST,county.COUNTY),flush=True,file=sys.stdout)
-            except Exception as err:
-                print(f"ERROR [{county.COUNTY} {state.ST}]: {err}",flush=True,file=sys.stderr)

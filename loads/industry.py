@@ -154,7 +154,11 @@ energy use data.
 
     # pylint: disable=invalid-name
     CACHEDIR = None
+    """Cache folder path (`None` is package source folder)"""
+
     SOURCE = "https://data.nrel.gov/system/files/97/County_industry_energy_use.gz"
+    """Source of industry energy use data"""
+
     COLUMNS = {
         "fips_matching":None,
         "Coal": "nonelec_total_MW",
@@ -166,6 +170,7 @@ energy use data.
         "Other": "nonelec_total_MW",
         "Residual_fuel_oil": "nonelec_total_MW",
     }
+    """Mapping of source data columns to `Industry` columns"""
 
     def __init__(self,
         state:str=None,
@@ -276,31 +281,3 @@ energy use data.
                 },
                 index=dt_index,
                 ))
-
-
-
-
-if __name__ == "__main__":
-
-    # print(Industry())
-
-    # print(Industry("CA"))
-
-    # print(Industry("CA","Alameda"))
-
-    # print(Industry("CA","Alameda",
-    #     loadshape=pd.DataFrame(
-    #         data=[0.1, 0.2, 0.3, 0.2],
-    #         index=pd.date_range(
-    #             start="2018-01-01 00:00:00+0000",
-    #             end="2018-01-01 03:00:00+0000",
-    #             freq="1h"
-    #             ))))
-
-    print(Industry("CA","Alameda",
-        loadshape={
-            "shape": [0.1,0.2,0.3,0.2],
-            "start": "2020-08-01 00:00:00+0000",
-            "end": "2020-09-01 00:00:00+0000",
-            "freq": "1h",
-        }))

@@ -62,6 +62,8 @@ class RESstock(pd.DataFrame):
     """
     # pylint: disable=invalid-name,too-many-locals
     CACHEDIR = None
+    """Cache folder path (`None` is package source folder)"""
+
     COLUMNS = {
         "out.electricity.bath_fan.energy_consumption": "elec_bathfan",
         "out.electricity.ceiling_fan.energy_consumption": "elec_ceilingfan",
@@ -118,6 +120,8 @@ class RESstock(pd.DataFrame):
         "out.wood.heating.energy_consumption": "wood_heating",
         "out.wood.total.energy_consumption": "wood_total",
     }
+    """Mapping of res RESstock columns to `RESstock` data frame columns"""
+
     BUILDING_TYPES = {
         "RSD": "single-family_detached",
         "RSA": "single-family_attached",
@@ -125,8 +129,8 @@ class RESstock(pd.DataFrame):
         "RMM": "multi-family_with_5plus_units",
         "RMH": "mobile_home",
     }
-    STATES = States().values.tolist()
-
+    """Mapping of `RESstock` building types from RESstock building types"""
+    
     def __init__(self,
         state:str,
         county:str=None,
@@ -224,15 +228,3 @@ class RESstock(pd.DataFrame):
         """Return dict of accepted kwargs by this class constructor"""
         return {x:y for x,y in kwargs.items()
             if x in cls.__init__.__annotations__}
-
-if __name__ == '__main__':
-
-    pd.options.display.width = None
-    pd.options.display.max_columns = None
-
-    print(RESstock(state="CA",county="Alameda",building_type="RSD"))
-    quit()
-    for bt in RESstock.BUILDING_TYPES:
-        print("Building type",bt,flush=True)
-        print(RESstock(state="CA",building_type=bt))
-        print(RESstock(state="CA",county="Alameda",building_type=bt))

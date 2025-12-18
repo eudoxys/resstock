@@ -29,6 +29,3 @@ class Agriculture(pd.DataFrame):
             super().__init__(data)
         else:
             super().__init__(data)
-
-if __name__ == '__main__':
-    print(Agriculture("CA","Alameda"))

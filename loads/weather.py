@@ -36,6 +36,7 @@ from fips.states import State
 class Weather(pd.DataFrame):
     """Weather data frame implementation"""
     CACHEDIR = None
+    """Cache folder path (`None` is package source folder)"""
 
     def __init__(self,
         state:str,
@@ -83,7 +84,3 @@ class Weather(pd.DataFrame):
         # move year-end data to beginning
         data.index = pd.DatetimeIndex([str(x).replace("2019","2018") for x in data.index])
         super().__init__(data.sort_index())
-
-if __name__ == '__main__':
-    
-    print(Weather("CA","Alameda"))

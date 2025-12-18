@@ -191,10 +191,3 @@ def main(*args:list[str]) -> int:
 
         print(f"ERROR [loads]: {err}")
         return E_FAILED
-
-if __name__ == '__main__':
-    # pd.options.display.width = None
-    # pd.options.display.max_columns = None
-    # pd.options.display.max_rows = None
-    # main("CA","Alameda","residential","--building_type=RSD")
-    main("CA","Alameda","residential","--format=csv")

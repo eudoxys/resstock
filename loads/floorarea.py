@@ -52,9 +52,11 @@ from fips.counties import County
 class Floorarea(pd.DataFrame):
     """Commercial building floor area data frame implementation"""
     CACHEDIR = None
+    """Cache folder path (`None` is package source folder)"""
+
     YEAR = 2019
-    REGIONS = {
-    }
+    """Default floor area data year"""
+
     BUILDING_TYPES = {
         "apartment": ["CLL"],
         "full_service_restaurant": ["CLF"],
@@ -70,6 +72,7 @@ class Floorarea(pd.DataFrame):
         "warehouse": ["CMW"],
         "hospital": ["CLH"],
     }
+    """Mapping of floor area building types to COMstock building types"""
 
     def __init__(self,
         state:str=None,
@@ -138,9 +141,3 @@ class Floorarea(pd.DataFrame):
         else:
             fips = County(ST=state,COUNTY=county).FIPS
             super().__init__(data.set_index(["ST","FIPS"]).sort_index().loc[state,fips])
-
-if __name__ == "__main__":
-
-    # print(Floorarea())
-    # print(Floorarea("CA"))
-    print(Floorarea("CA","Alameda"))
