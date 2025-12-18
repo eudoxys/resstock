@@ -83,7 +83,7 @@ class Units(float):
             data = pd.read_csv(cache,index_col=[0])
 
         if year is None:
-            year = data.columns[-1]
+            year = int(data.columns[-1])
         else:
             year = int(year)
         assert year in [int(x) for x in data.columns], f"{year=} is not valid, must be one of {data.columns}"
