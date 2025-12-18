@@ -99,7 +99,3 @@ class Units(float):
                 f"did not result in a single value ({result=})")
             return float('nan')
         return result[0]
-
-print(Units("CA","Alameda",2024))
-print(Units("CA","Alameda","2024"))
-print(Units("CA","Alameda"))
