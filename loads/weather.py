@@ -35,8 +35,9 @@ from fips.states import State
 
 class Weather(pd.DataFrame):
     """Weather data frame implementation"""
+
     CACHEDIR = None
-    """Cache folder path (`None` is package source folder)"""
+    """Cache folder path (`None` is '{packagedir}/.cache')"""
 
     def __init__(self,
         state:str,
