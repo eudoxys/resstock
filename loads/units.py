@@ -83,19 +83,23 @@ class Units(float):
             data = pd.read_csv(cache,index_col=[0])
 
         if year is None:
-            year = int(data.columns[-1])
+            year = data.columns[-1]
         else:
-            year = int(year)
-        assert year in [int(x) for x in data.columns], f"{year=} is not valid, must be one of {data.columns}"
+            year = type(data.columns[-1])(year)
+        assert year in data.columns, f"{year=} is not valid, must be one of {data.columns}"
 
         if county is None:
             row = data.index
         else:
             row = [x for x in data.index if x.startswith(f".{county}")]
 
-        result = data.loc[row,str(year)].values
+        result = data.loc[row,year].values
         if len(result) != 1:
             warnings.warn(f"Units({state=},{county=},{year=}) "\
                 f"did not result in a single value ({result=})")
             return float('nan')
         return result[0]
+
+print(Units("CA","Alameda",2024))
+print(Units("CA","Alameda","2024"))
+print(Units("CA","Alameda"))
