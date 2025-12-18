@@ -156,7 +156,7 @@ class Residential(pd.DataFrame):
 
         if collect is None:
             collect = self.COLLECT
-            
+
         units = {}
         total_units = 0.0
         data = {}
@@ -187,8 +187,6 @@ class Residential(pd.DataFrame):
             # collect building type data
             for ctype in {x.split("_",1)[0] for x in collect.keys()}:
                 for kwname in [x for x in data.columns if x.startswith(f"{btype}_{ctype}_")]:
-                    totname = f"{btype}_{ctype}_total_MW"
-                    pu = (data[kwname] / data[totname]).fillna(0.0)
                     data[kwname] *= units[btype] / total_units * actual_units
 
             # consolidate building type data
@@ -203,7 +201,8 @@ class Residential(pd.DataFrame):
         # move year-end data to beginning
         data.index = pd.DatetimeIndex([str(x).replace("2019","2018") for x in data.index])
         data.index.name = "timestamp"
-        super().__init__(data.sort_index()[sorted(data.columns)])
+        data.sort_index(inplace=True)
+        super().__init__(data[sorted(data.columns)])
 
     @classmethod
     def makeargs(cls,**kwargs):

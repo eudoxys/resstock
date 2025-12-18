@@ -43,7 +43,6 @@ References:
 """
 
 import os
-import urllib
 
 import pandas as pd
 
@@ -51,6 +50,8 @@ from fips.counties import County
 
 class Floorarea(pd.DataFrame):
     """Commercial building floor area data frame implementation"""
+
+    # pylint: disable=invalid-name
     CACHEDIR = None
     """Cache folder path (`None` is package source folder)"""
 
@@ -100,7 +101,8 @@ class Floorarea(pd.DataFrame):
         # load cunty commercial floor area data
         cache = os.path.join(self.CACHEDIR,"floorarea.csv.gz")
         if not os.path.exists(cache):
-            root = "https://data.openei.org/files/906/{year}%20Commercial%20Building%20Inventory%20-%20{region}.xlsb"
+            root = "https://data.openei.org/files/906/{year}"\
+                "%20Commercial%20Building%20Inventory%20-%20{region}.xlsb"
             data = []
             for n,region in enumerate([
                 "South Central",
@@ -120,7 +122,9 @@ class Floorarea(pd.DataFrame):
                         sheet_name="County",
                         usecols=["statecode","countyid","doe_prototype","area_sum"]
                         ).dropna()
-                    result = result.groupby(["statecode","countyid","doe_prototype"]).sum().reset_index()
+                    result = result.groupby(["statecode","countyid","doe_prototype"])\
+                        .sum()\
+                        .reset_index()
                     result.columns = ["ST","FIPS","BUILDING_TYPE","FLOORAREA"]
                     result.to_csv(file,index=False,header=True,compression="gzip")
                 else:

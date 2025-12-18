@@ -1,3 +1,4 @@
+# pylint: disable=line-too-long
 """Electric loads data accessor
 
 Generates electric load model for residential, commercial, industrial,
@@ -54,6 +55,7 @@ Caveats:
 * Compiling data can be time consuming. To help with performance data is cached
   locally in the package library. 
 """
+# pylint: enable=line-too-long
 
 import sys
 import argparse

@@ -1,18 +1,27 @@
 """Housing units
 
+Example:
+
+The number of housing units in Alameda County CA in 2020 is obtained with the code
+
+    from loads.units import Units
+    print(Units("CA","Alameda",2020))
+
+which gives the following output
+
+    623350.0
+
 See https://www.census.gov/data/tables/time-series/demo/popest/2020s-total-housing-units.html
 
 """
 
 import os
-import sys
 import warnings
 import socket
 
 import pandas as pd
 
-from fips.states import State, States
-from fips.counties import Counties
+from fips.states import State
 
 # pylint: disable=redefined-outer-name
 class Units(float):
@@ -23,7 +32,7 @@ class Units(float):
     def __new__(cls,
         state:str,
         county:str=None,
-        year:str=None,
+        year:str|int=None,
         ):
         """Load housing units from Census Bureau
 
@@ -75,7 +84,9 @@ class Units(float):
 
         if year is None:
             year = data.columns[-1]
-        assert year in data.columns, f"{year=} is not valid"
+        else:
+            year = str(year)
+        assert year in data.columns, f"{year=} is not valid, must be one of {data.columns}"
 
         if county is None:
             row = data.index
@@ -88,3 +99,5 @@ class Units(float):
                 f"did not result in a single value ({result=})")
             return float('nan')
         return result[0]
+
+print(Units("CA","Alameda",2020))

@@ -187,7 +187,7 @@ energy use data.
 
         - `loadshape`: load shape to roll out county load
         """
-        
+
         # set cache location
         if self.CACHEDIR is None:
             self.CACHEDIR = os.path.join(os.path.dirname(__file__),".cache")
