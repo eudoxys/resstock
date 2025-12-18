@@ -1,33 +1,31 @@
-"""Commercial floor area"""
+"""Commercial floor area data accessor
+
+Examples:
+
+Get the commercial building floor areas for Alameda County CA
+
+    from loads.floorarea import Floorarea
+    print(Floorarea("CA","Alameda"))
+
+References: 
+
+- https://data.openei.org/submissions/906
+"""
 
 import os
 import urllib
 
 import pandas as pd
 
-class Floorarea(pd.DataFrame):
+from fips.counties import County
 
+class Floorarea(pd.DataFrame):
+    """Commercial building floor area data frame implementation"""
     CACHEDIR = None
     YEAR = 2019
     REGIONS = {
     }
     BUILDING_TYPES = {
-
-        # "CLF": "fullservicerestaurant",
-        # "CLH": "hospital",
-        # "CLL": "largehotel",
-        # "CLO": "largeoffice",
-        # "CSH": "outpatient",
-        # "CMO": "mediumoffice",
-        # "CSE": "primaryschool",
-        # "CSF": "quickservicerestaurant",
-        # "CSR": "retailstandalone",
-        # "CMR": "retailstripmall",
-        # "CME": "secondaryschool",
-        # "CSL": "smallhotel",
-        # "CSO": "smalloffice",
-        # "CMW": "warehouse",
-
         "apartment": ["CLL"],
         "full_service_restaurant": ["CLF"],
         "hotel": ["CSL"],
@@ -44,17 +42,27 @@ class Floorarea(pd.DataFrame):
     }
 
     def __init__(self,
-        state:str,
-        county:str,
+        state:str=None,
+        county:str=None,
+        year:int=None,
         ):
         """Commercial floor area data frame constructor
 
         Arguments:
 
+        - `state`: specify the state abbreviation (required)
+
+        - `county`: specify the county name (required)
+
+        - `year`: specify the year on which the floor area is based
+          (default most recent in `Units()`)
         """
         if self.CACHEDIR is None:
             self.CACHEDIR = os.path.join(os.path.dirname(__file__),".cache")
         os.makedirs(self.CACHEDIR,exist_ok=True)
+
+        if year is None:
+            year = self.YEAR
 
         # load cunty commercial floor area data
         cache = os.path.join(self.CACHEDIR,"floorarea.csv.gz")
@@ -71,8 +79,11 @@ class Floorarea(pd.DataFrame):
 
                 file = os.path.join(self.CACHEDIR,f"region{n}_floorarea.csv.gz")
                 if not os.path.exists(file):
-                    print("Downloading",region,"...",flush=True)
-                    result = pd.read_excel(root.format(region=region.replace(" ","%20")),
+                    # print("Downloading",region,"...",flush=True)
+                    result = pd.read_excel(root.format(
+                            region=region.replace(" ","%20"),
+                            year=year
+                            ),
                         sheet_name="County",
                         usecols=["statecode","countyid","doe_prototype","area_sum"]
                         ).dropna()
@@ -81,6 +92,7 @@ class Floorarea(pd.DataFrame):
                     result.to_csv(file,index=False,header=True,compression="gzip")
                 else:
                     result = pd.read_csv(file)
+                result.FLOORAREA = result.FLOORAREA.astype(float)
                 data.append(result)
             data = pd.concat(data)
             data.to_csv(cache,index=False,header=True,compression="gzip")
@@ -89,8 +101,16 @@ class Floorarea(pd.DataFrame):
         data.FIPS=[f"{x:05d}" for x in data.FIPS]
         data.BUILDING_TYPE = ["|".join(self.BUILDING_TYPES[x]) for x in data.BUILDING_TYPE]
 
-        super().__init__(data)
+        if not state and not county:
+            super().__init__(data)
+        elif state and not county:
+            super().__init__(data.set_index("ST").loc[state])
+        else:
+            fips = County(ST=state,COUNTY=county).FIPS
+            super().__init__(data.set_index(["ST","FIPS"]).sort_index().loc[state,fips])
 
 if __name__ == "__main__":
 
+    print(Floorarea())
+    print(Floorarea("CA"))
     print(Floorarea("CA","Alameda"))

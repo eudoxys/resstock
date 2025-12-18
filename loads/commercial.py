@@ -4,7 +4,7 @@ import pandas as pd
 
 from fips.states import States
 from fips.counties import Counties
-from loads.units import Units
+from loads.floorarea import Floorarea
 from loads.comstock import COMstock
 
 class Commercial(pd.DataFrame):
@@ -74,21 +74,21 @@ class Commercial(pd.DataFrame):
 
         Arguments:
 
-            - `state`: specify the state abbreviation (required)
+        - `state`: specify the state abbreviation (required)
 
-            - `county`: specify the county name (required)
+        - `county`: specify the county name (required)
 
-            - `freq`: specify the data sampling frequency (default is "1h"")
+        - `freq`: specify the data sampling frequency (default is "1h"")
 
-            - `collect`: specify how COMstock columns are collected
+        - `collect`: specify how COMstock columns are collected
 
-            - `year`: specify the year on which the number of housing units is
-              based (default most recent in `Units()`)
+        - `year`: specify the year on which the floor area is based
+          (default most recent in `Units()`)
 
         This class compiles the building type data for a county by collecting
-        COMstock columns, scaling by the number of housing units in that year,
-        and finally computing total MW and the fraction of total of electric
-        or non-electric load.
+        COMstock columns, scaling by the floor area in that year, and finally
+        computing total MW and the fraction of total of electric or
+        non-electric load.
         """
         # pylint: disable=too-many-locals
         assert state in States()["ST"].values, f"{state=} is not valid"
@@ -98,9 +98,24 @@ class Commercial(pd.DataFrame):
         if collect is None:
             collect = self.COLLECT
             
-        units = {}
-        total_units = 0.0
+        floorarea = {}
+        total_area = 0.0
         data = {}
+
+        # split floor areas by building type
+        actual_areas = Floorarea(state=state,county=county,year=year).set_index("BUILDING_TYPE").sort_index()
+        split_areas = {"BUILDING_TYPE":[],"FLOORAREA":[],"PRORATA":[],"FRACTION":[]}
+        actual_areas_sum = actual_areas.FLOORAREA.sum()
+        for bts,area in list(actual_areas.iterrows()):
+            for bt in bts.split("|"):
+                split_areas["BUILDING_TYPE"].append(bt if bt else "OTH")
+                split_areas["FLOORAREA"].append(area.FLOORAREA)
+                split_areas["PRORATA"].append(bts)
+                split_areas["FRACTION"].append(area.FLOORAREA/actual_areas_sum)
+        split_areas = pd.DataFrame(split_areas).set_index("BUILDING_TYPE")
+        print(split_areas)
+
+        quit()
 
         # collect building type data
         for btype in COMstock.BUILDING_TYPES:
@@ -112,16 +127,13 @@ class Commercial(pd.DataFrame):
                 )
             for aggr,columns in collect.items():
                 data[f"{btype}_{aggr}_MW"] = bdata[columns].sum(axis=1) / 1e6
-                units[btype] = bdata["units"].max()
-                total_units += units[btype]
+                floorarea[btype] = bdata["floor_area"].max()
+                total_area += floorarea[btype]
         data = pd.DataFrame(data)
 
         # prepare consolidation columns
         for ctype in collect.keys():
             data[f"{ctype}_MW"] = 0.0
-
-        # scale by number of commercial units and calculate fractional loads
-        actual_units = Units(state=state,county=county,year=year)
 
         for btype in COMstock.BUILDING_TYPES:
 
@@ -130,7 +142,7 @@ class Commercial(pd.DataFrame):
                 for kwname in [x for x in data.columns if x.startswith(f"{btype}_{ctype}_")]:
                     totname = f"{btype}_{ctype}_total_MW"
                     pu = (data[kwname] / data[totname]).fillna(0.0)
-                    data[kwname] *= units[btype] / total_units * actual_units
+                    data[kwname] *= floorarea[btype] / total_area * split_areas.loc[btype].FLOORAREA
 
             # consolidate building type data
             for ctype in collect.keys():
@@ -141,7 +153,9 @@ class Commercial(pd.DataFrame):
         data["elec_net_MW"] = data["elec_total_MW"] + data["elec_dg_MW"]
         data.drop("nonelec_dg_MW",axis=1,inplace=True)
 
-        super().__init__(data[sorted(data.columns)])
+        # move year-end data to beginning
+        data.index = pd.DatetimeIndex([str(x).replace("2019","2018") for x in data.index])
+        super().__init__(data.sort_index()[sorted(data.columns)])
 
     @classmethod
     def makeargs(cls,**kwargs):

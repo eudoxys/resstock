@@ -28,11 +28,11 @@ class Units(float):
 
         Arguments:
 
-            - `state`: state for which to read data
+        - `state`: state for which to read data
 
-            - `county`: county for which to read data (default entire state)
+        - `county`: county for which to read data (default entire state)
 
-            - `year`: year for which to read data (default most recent)
+        - `year`: year for which to read data (default most recent)
         """
 
         if cls.CACHEDIR is None:

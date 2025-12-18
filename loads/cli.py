@@ -1,4 +1,4 @@
-"""RESstock data accessor
+"""Electric loads data accessor
 
 Generates electric load model for residential, commercial, industrial,
 agricultural, and public sectors. Two types of data frame are generated
@@ -47,11 +47,11 @@ def main(*args:list[str]) -> int:
 
     Argument:
 
-        - `*args`: command line arguments (`None` is `sys.argv`)
+    - `*args`: command line arguments (`None` is `sys.argv`)
 
     Returns:
 
-        - `int`: return/exit code
+    - `int`: return/exit code
     """
     # pylint: disable=too-many-return-statements,too-many-branches
     try:
@@ -62,29 +62,29 @@ def main(*args:list[str]) -> int:
 
         # setup command line parser
         parser = argparse.ArgumentParser(
-            prog="resstock",
-            description="RESstock form data accessor",
-            epilog="See https://www.eudoxys.com/resstock for documentation. ",
+            prog="loads",
+            description="Electric loads data accessor",
+            epilog="See https://www.eudoxys.com/loads for documentation. ",
             )
         parser.add_argument("state")
         parser.add_argument("county")
         parser.add_argument("sector",
-            choices=["residential","commercial","industrial","agricultural","public"]
+            choices=["residential","commercial","industrial","agricultural","public","weather"]
             )
         parser.add_argument("-y","--year",
             type=int,
-            help="set load model year")
+            help="set load model year (default 2018)")
         parser.add_argument("-o","--output",
             help="set output file name")
         parser.add_argument("--building_type",
-            help="access raw building type stock data")
+            help="access raw building type stock data (residential and commercial only)")
         parser.add_argument("--format",
             choices=["csv","gzip","zip","xlsx"],
             help="specify output format")
         parser.add_argument("--precision",
             type=int,
             default=3,
-            help="specify output precision"
+            help="specify output precision (default 3)"
             )
         parser.add_argument("--warning",
             action="store_true",

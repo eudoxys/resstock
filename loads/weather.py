@@ -1,4 +1,12 @@
-"""Weather data accessor"""
+"""Weather data accessor
+
+Access the weather corresponding to the load data.
+
+Example:
+
+    Weather("CA","Alameda")
+
+"""
 
 import os
 import datetime as dt
@@ -8,14 +16,19 @@ from fips.counties import County
 from fips.states import State
 
 class Weather(pd.DataFrame):
-
+    """Weather data frame implementation"""
     CACHEDIR = None
 
     def __init__(self,
         state:str,
         county:str,
         ):
+        """Construct weather data frame for a county
 
+        - `state`: specify the state abbreviation (required)
+
+        - `county`: specify the county name (required)
+        """
         if self.CACHEDIR is None:
             self.CACHEDIR = os.path.join(os.path.dirname(__file__),".cache")
         os.makedirs(self.CACHEDIR,exist_ok=True)
@@ -49,7 +62,9 @@ class Weather(pd.DataFrame):
                 parse_dates=["timestamp"],
                 )
 
-        super().__init__(data)
+        # move year-end data to beginning
+        data.index = pd.DatetimeIndex([str(x).replace("2019","2018") for x in data.index])
+        super().__init__(data.sort_index())
 
 if __name__ == '__main__':
     

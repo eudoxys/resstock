@@ -111,14 +111,14 @@ class RESstock(pd.DataFrame):
 
         Arguments:
 
-            - `state`: specifies the state (e.g., "CA")
+        - `state`: specifies the state (e.g., "CA")
 
-            - `county`: specifies the county (e.g., "Alameda") or None for the
-              entire state
+        - `county`: specifies the county (e.g., "Alameda") or None for the
+          entire state
 
-            - `building_type`: specifies the building type (e.g., "house")
+        - `building_type`: specifies the building type (e.g., "house")
 
-            - `freq`: specifies the sampling interval (None for raw sampling)
+        - `freq`: specifies the sampling interval (None for raw sampling)
         """
         assert building_type in self.BUILDING_TYPES, \
             f"{building_type=} is not one of {self.BUILDING_TYPES}"
@@ -185,11 +185,13 @@ class RESstock(pd.DataFrame):
         data["units"] = units
 
         # resample if necessary
-        if freq is None:
-            super().__init__(data)
-        else:
+        if not freq is None:
             ts = data.index.diff().mean().total_seconds()/3600
-            super().__init__((data/ts).resample(freq).ffill())
+            data = (data/ts).resample(freq).ffill()
+
+        # move year-end data to beginning
+        data.index = pd.DatetimeIndex([str(x).replace("2019","2018") for x in data.index])
+        super().__init__(data.sort_index())
 
     @classmethod
     def makeargs(cls,**kwargs):

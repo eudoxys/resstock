@@ -103,16 +103,16 @@ class Residential(pd.DataFrame):
 
         Arguments:
 
-            - `state`: specify the state abbreviation (required)
+        - `state`: specify the state abbreviation (required)
 
-            - `county`: specify the county name (required)
+        - `county`: specify the county name (required)
 
-            - `freq`: specify the data sampling frequency (default is "1h"")
+        - `freq`: specify the data sampling frequency (default is "1h"")
 
-            - `collect`: specify how RESstock columns are collected
+        - `collect`: specify how RESstock columns are collected
 
-            - `year`: specify the year on which the number of housing units is
-              based (default most recent in `Units()`)
+        - `year`: specify the year on which the number of housing units is
+          based (default most recent in `Units()`)
 
         This class compiles the building type data for a county by collecting
         RESstock columns, scaling by the number of housing units in that year,
@@ -170,7 +170,9 @@ class Residential(pd.DataFrame):
         data["elec_net_MW"] = data["elec_total_MW"] + data["elec_dg_MW"]
         data.drop("nonelec_dg_MW",axis=1,inplace=True)
 
-        super().__init__(data[sorted(data.columns)])
+        # move year-end data to beginning
+        data.index = pd.DatetimeIndex([str(x).replace("2019","2018") for x in data.index])
+        super().__init__(data.sort_index()[sorted(data.columns)])
 
     @classmethod
     def makeargs(cls,**kwargs):
