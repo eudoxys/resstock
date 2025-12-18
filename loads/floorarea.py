@@ -1,11 +1,41 @@
 """Commercial floor area data accessor
 
-Examples:
+The commercial floor area data is used to scale the load data from COMstock to
+match the actual floor area in a jurisdiction. The COMstock data is provided
+with only a representative floor area, which may not match the actual floor area
+of a county or state.
 
-Get the commercial building floor areas for Alameda County CA
+Floor area data is provided with a different set of building types than those
+available in COMstock. The `BUILDING_TYPE` column is used to determine which
+floor areas correspond to COMstock building types. In cases where more than
+one COMstock building types matches, the split is weighted equally. Floor
+areas that do not match any COMstock building type are not given any
+(i.e., `BUILDING_TYPE` is blank).
+
+Example:
+
+Get the commercial building floor areas for Alameda County CA using the code
 
     from loads.floorarea import Floorarea
     print(Floorarea("CA","Alameda"))
+
+which generates the following output
+
+             BUILDING_TYPE  FLOORAREA
+    ST FIPS                          
+    CA 06001           CLL  244969200
+       06001           CLF    3200900
+       06001           CLH    5894800
+       06001           CSL   13351200
+       06001                 90258900
+       06001   CSO|CMO|CLO   84136400
+       06001           CSH    9797500
+       06001           CSF     706000
+       06001           CMS   51336900
+       06001       CME|CSE    5879200
+       06001           CSR    6843000
+       06001           CMR    1994200
+       06001           CMW  158914200
 
 References: 
 
@@ -111,6 +141,6 @@ class Floorarea(pd.DataFrame):
 
 if __name__ == "__main__":
 
-    print(Floorarea())
-    print(Floorarea("CA"))
+    # print(Floorarea())
+    # print(Floorarea("CA"))
     print(Floorarea("CA","Alameda"))

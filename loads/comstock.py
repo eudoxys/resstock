@@ -1,4 +1,36 @@
-"""COMstock data accessor"""
+"""COMstock data accessor
+
+The `COMstock` class is a Pandas data frame loaded with the COMstock
+building data.
+
+Commercial building types are coded using three characters `C`, 
+`{'L','M','S'}` (large, medium, and small), and
+`{'F','H','L','O','E','R','W'}` (food, health, lodging, office,
+education, retail, and warehouse). Load values are given in W/sf.
+
+Example:
+
+To get the large office load data for Alameda CA use the command
+
+    print(COMstock(state="CA",building_type="CLO"))
+
+which outputs the following
+
+                               district_cooling  district_heating  district_hotwater  elec_cooling  elec_exteriorlights  elec_fans  elec_heatrecovery  elec_heatrejection  elec_heating  elec_equipment  elec_interiorlights  elec_pumps  elec_refrigeration  elec_watersystems  gas_heating  gas_equipment  gas_watersystems  district_totalcooling  district_totalheating  elec_total  gas_total  other_heating  other_watersystems  other_total     total    floor_area
+    2018-01-01 00:00:00+00:00          0.003947          0.000897           0.000542      0.247873             0.000000   0.341148                0.0            0.003513      0.000427        0.672713             0.635671    0.072743                 0.0           0.044643     0.079518            0.0          0.068432               0.003947               0.001439    2.018730   0.147951   1.194175e-04            0.004664     0.004783  2.176850  1.673457e+09
+    2018-01-01 01:00:00+00:00          0.001914          0.001492           0.000258      0.151487             0.070896   0.332745                0.0            0.001516      0.003077        0.575443             0.552590    0.067595                 0.0           0.032545     0.152927            0.0          0.052465               0.001914               0.001750    1.787894   0.205392   2.919943e-04            0.003476     0.003768  2.000718  1.673457e+09
+    2018-01-01 02:00:00+00:00          0.000239          0.002316           0.000235      0.117065             0.070896   0.336802                0.0            0.000966      0.009938        0.513285             0.473957    0.066525                 0.0           0.026195     0.213814            0.0          0.041336               0.000239               0.002552    1.615629   0.255150   5.943146e-04            0.001269     0.001863  1.875433  1.673457e+09
+    2018-01-01 03:00:00+00:00          0.000000          0.003258           0.000233      0.098746             0.070896   0.341188                0.0            0.000741      0.014659        0.478001             0.412001    0.066028                 0.0           0.022135     0.263656            0.0          0.035833               0.000000               0.003491    1.504394   0.299489   8.927149e-04            0.001192     0.002084  1.809459  1.673457e+09
+    2018-01-01 04:00:00+00:00          0.000000          0.004302           0.000231      0.086537             0.070896   0.344535                0.0            0.000667      0.018911        0.453695             0.357113    0.064678                 0.0           0.019072     0.303606            0.0          0.031429               0.000000               0.004533    1.416105   0.335035   1.082119e-03            0.000791     0.001873  1.757546  1.673457e+09
+    ...                                     ...               ...                ...           ...                  ...        ...                ...                 ...           ...             ...                  ...         ...                 ...                ...          ...            ...               ...                    ...                    ...         ...        ...            ...                 ...          ...       ...           ...
+    2018-12-31 19:00:00+00:00          0.005069          0.000758           0.000755      0.294861             0.000000   0.358621                0.0            0.004528      0.000848        0.909436             0.804803    0.073259                 0.0           0.056030     0.071314            0.0          0.083072               0.005069               0.001513    2.502388   0.154385   4.053883e-05            0.004392     0.004432  2.667787  1.673457e+09
+    2018-12-31 20:00:00+00:00          0.004822          0.000677           0.000687      0.299695             0.000000   0.358063                0.0            0.004791      0.000329        0.899921             0.806683    0.073419                 0.0           0.055722     0.067382            0.0          0.083383               0.004822               0.001364    2.498622   0.150766   8.796162e-06            0.004194     0.004203  2.659776  1.673457e+09
+    2018-12-31 21:00:00+00:00          0.004999          0.000562           0.001042      0.313043             0.000000   0.360213                0.0            0.005054      0.000082        0.871655             0.800171    0.074362                 0.0           0.065370     0.048865            0.0          0.091510               0.004999               0.001604    2.489950   0.140375   7.648837e-07            0.004082     0.004083  2.641011  1.673457e+09
+    2018-12-31 22:00:00+00:00          0.006171          0.000560           0.001107      0.320478             0.000000   0.360666                0.0            0.005180      0.000069        0.837485             0.765585    0.074974                 0.0           0.068690     0.043209            0.0          0.090506               0.006171               0.001667    2.433126   0.133715   3.250756e-06            0.004691     0.004695  2.579374  1.673457e+09
+    2018-12-31 23:00:00+00:00          0.005937          0.000672           0.001107      0.303653             0.000000   0.354847                0.0            0.004797      0.000155        0.768944             0.709492    0.074734                 0.0           0.058527     0.054132            0.0          0.080403               0.005937               0.001778    2.275149   0.134535   6.319851e-05            0.004593     0.004656  2.422056  1.673457e+09
+
+    [8760 rows x 26 columns]
+"""
 
 import os
 import datetime as dt
@@ -18,8 +50,7 @@ def _float(s,default=0.0):
         return default
 
 class COMstock(pd.DataFrame):
-    """The `COMstock` class is a Pandas data frame loaded with the COMstock
-    building data.
+    """Construct a COMstock data frame
 
     The data frame includes the columns specified by `COLUMNS` constant, which
     maps the COMstock data to the data frame columns. The values are given in
@@ -27,11 +58,6 @@ class COMstock(pd.DataFrame):
     from COMstock is given by the `floor_area` column. Note that the floor
     area is that used in the COMstock model, which may not be accurately
     reflect the actual floor area in any given year.
-
-    Commercial building types are coded using three characters `C`, 
-    `{'L','M','S'}` (large, medium, and small), and
-    `{'F','H','L','O','E','R','W'}` (food, health, lodging, office,
-    education, retail, and warehouse).
     """
 
     # pylint: disable=invalid-name,too-many-locals

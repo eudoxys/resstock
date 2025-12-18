@@ -4,8 +4,26 @@ Access the weather corresponding to the load data.
 
 Example:
 
+To get the weather data for Alameda County CA use the command
+
     Weather("CA","Alameda")
 
+which outputs the following
+
+                               temperature[degF]  ...  diffuse[W/m^2]
+    2018-01-01 00:00:00+00:00              53.96  ...            32.0
+    2018-01-01 01:00:00+00:00              51.98  ...             2.0
+    2018-01-01 02:00:00+00:00              51.08  ...             0.0
+    2018-01-01 03:00:00+00:00              51.08  ...             0.0
+    2018-01-01 04:00:00+00:00              51.08  ...             0.0
+    ...                                      ...  ...             ...
+    2018-12-31 19:00:00+00:00              57.02  ...            58.0
+    2018-12-31 20:00:00+00:00              57.92  ...            61.5
+    2018-12-31 21:00:00+00:00              57.92  ...            63.5
+    2018-12-31 22:00:00+00:00              57.92  ...            58.5
+    2018-12-31 23:00:00+00:00              57.02  ...            52.0
+
+    [8760 rows x 5 columns]
 """
 
 import os
@@ -68,4 +86,4 @@ class Weather(pd.DataFrame):
 
 if __name__ == '__main__':
     
-    print(Weather("NY","Albany"))
+    print(Weather("CA","Alameda"))

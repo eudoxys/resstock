@@ -1,4 +1,33 @@
-"""Residential building load model"""
+"""Residential building load model
+
+The residential load data frame collects and consolidates `RESstock` data. Housing units are
+obtained from `Units` data to scale loads for the specified year.
+
+Example:
+
+The residential load data for Alameda County CA is obtained using the command
+
+    from loads import Residential
+    print(Residential(state="CA",county="Alameda"))
+
+which outputs the following
+
+                               elec_baseload_MW  ...  nonelec_total_MW
+    timestamp                                    ...                  
+    2018-01-01 00:00:00+00:00         45.084952  ...         46.469329
+    2018-01-01 01:00:00+00:00         52.149717  ...         55.490697
+    2018-01-01 02:00:00+00:00         58.137018  ...         66.615070
+    2018-01-01 03:00:00+00:00         55.908885  ...         76.447298
+    2018-01-01 04:00:00+00:00         52.823653  ...         88.704520
+    ...                                     ...  ...               ...
+    2018-12-31 19:00:00+00:00         41.082225  ...         78.719394
+    2018-12-31 20:00:00+00:00         41.320007  ...         65.788885
+    2018-12-31 21:00:00+00:00         39.149527  ...         54.617247
+    2018-12-31 22:00:00+00:00         37.711368  ...         45.972108
+    2018-12-31 23:00:00+00:00         38.225652  ...         39.217772
+
+    [8760 rows x 10 columns]
+"""
 
 import pandas as pd
 
@@ -172,6 +201,7 @@ class Residential(pd.DataFrame):
 
         # move year-end data to beginning
         data.index = pd.DatetimeIndex([str(x).replace("2019","2018") for x in data.index])
+        data.index.name = "timestamp"
         super().__init__(data.sort_index()[sorted(data.columns)])
 
     @classmethod
@@ -181,8 +211,5 @@ class Residential(pd.DataFrame):
             if x in cls.__init__.__annotations__}
 
 if __name__ == '__main__':
-
-    pd.options.display.width = None
-    pd.options.display.max_columns = None
 
     print(Residential(state="CA",county="Alameda"))
