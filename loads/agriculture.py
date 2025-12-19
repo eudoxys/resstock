@@ -1,10 +1,11 @@
 """Agricultural load data
 
-Collects agricultural load data at state/county level. Data is based on[NREL US
-County-Level Industrial Energy Use](https://data.nrel.gov/submissions/97).
+Collects agricultural load data at state/county level. Data is based on [NREL US
+County-Level Industrial Energy Use](https://data.nrel.gov/submissions/97), which
+includes agricultural load data.
 
-Industrial non-electric total load and electric net load are converted average
-MW. All industries in each county are aggregated. 
+Agricultural non-electric total load and electric net load are converted to average
+MW. All agricultural loads in each county are aggregated. 
 
 Example:
 
