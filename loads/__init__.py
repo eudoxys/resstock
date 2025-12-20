@@ -127,10 +127,22 @@ Caveats:
 Package information:
 
 - Source code: https://github.com/eudoxys/loads
+
 - Documentation: https://www.eudoxys.com/loads
+
 - Issues: https://github.com/eudoxys/loads/issues
+
 - License: https://github.com/eudoxys/loads/blob/main/LICENSE
-- Requirements: https://github.com/eudoxys/loads/blob/main/requirements.txt
+
+- Dependencies: 
+
+  - [pandas](https://pypi.org/project/pandas/)
+  - [openpyxl](https://pypi.org/project/openpyxl/)
+  - [pyxlsb](https://pypi.org/project/pyxlsb/)
+  - [requests](https://pypi.org/project/requests/)
+  - [pytz](https://pypi.org/project/pytz/)
+  - [fips](https://github.com/eudoxys/fips)
+
 """
 from loads.cli import main
 from loads.resstock import RESstock
