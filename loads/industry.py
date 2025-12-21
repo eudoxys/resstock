@@ -6,7 +6,7 @@ County-Level Industrial Energy Use](https://data.nrel.gov/submissions/97).
 Industrial non-electric total load and electric net load are converted average
 MW. All industries in each county are aggregated. 
 
-Examples:
+# Examples
 
 Get the industrial load data for all US counties using the command
 
@@ -108,7 +108,7 @@ which output the following
 
     [745 rows x 2 columns]
 
-Caveat:
+# Caveat
 
 - Any industry for which a county FIPS code in the NREL data does not match a
   valid county FIPS code is matched to the previous county FIPS code, e.g.,
@@ -179,7 +179,7 @@ energy use data.
         ):
         """Construct an industrial load data frame
 
-        Arguments:
+        # Arguments
 
         - `state`: state (default all states)
 
@@ -282,3 +282,9 @@ energy use data.
                 },
                 index=dt_index,
                 ))
+
+    @classmethod
+    def makeargs(cls,**kwargs):
+        """@private Return dict of accepted kwargs by this class constructor"""
+        return {x:y for x,y in kwargs.items()
+            if x in cls.__init__.__annotations__}

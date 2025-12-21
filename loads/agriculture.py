@@ -7,7 +7,7 @@ includes agricultural load data.
 Agricultural non-electric total load and electric net load are converted to average
 MW. All agricultural loads in each county are aggregated. 
 
-Example:
+# Example
 
 Get the agricultural load data for all California counties using the command
 
@@ -27,7 +27,7 @@ which outputs the following
     Yolo                    40.123365    25.889051
     Yuba                    22.763883    15.086629
 
-Caveat:
+# Caveat
 
 - Any agriculture for which a county FIPS code in the NREL data does not match a
   valid county FIPS code is matched to the previous county FIPS code, e.g.,
@@ -66,7 +66,7 @@ class Agriculture(pd.DataFrame):
         ):
         """Construct an agricultural load data frame
 
-        Arguments:
+        # Arguments
 
         - `state`: state (default all states)
 
@@ -169,3 +169,10 @@ class Agriculture(pd.DataFrame):
                 },
                 index=dt_index,
                 ))
+
+    @classmethod
+    def makeargs(cls,**kwargs):
+        """@private Return dict of accepted kwargs by this class constructor"""
+        return {x:y for x,y in kwargs.items()
+            if x in cls.__init__.__annotations__}
+            

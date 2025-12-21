@@ -11,7 +11,7 @@ type is returned, the columns of which depend on the building type.  If
 entire sector is returned in columns of MW electric and non-electric base,
 cooling, heating, total, distributed generation, and net loads.
 
-Examples:
+# Examples
 
 To print the raw residential single-family detached house loads in Alameda
 County CA as a table, the command
@@ -31,7 +31,6 @@ outputs the following
     2018-12-31 22:00:00+00:00         0.359              0.0      62.863        4.585        22.521        12.094            2.340                0.0             7.565                  16.366            2.691            4.382         6.467                1.588        31.096                     0.0              3.857            7.387            0.0                 90.324     318.674            4.325         91.961               0.0             0.003 -155.361          2.133              0.0             45.969     768.840           0.0             24.723          4.568          0.0      0.000             0.000     36.104       83.604          5.726      3.286      234.099             8.221         0.607          45.554    914.240           497.037        0.0      0.000        0.959      7.457             6.498  1690.537           0.0         0.0  1253270.056
     2018-12-31 23:00:00+00:00         0.278              0.0      53.031        4.572        21.179        18.084            3.583                0.0             7.809                  15.976            4.070            2.242         6.313                1.639        18.060                     0.0              9.321           17.852            0.0                106.069     331.294            3.518         74.795               0.0             0.002 -108.314          1.229              0.0             44.875     769.450           0.0             18.951          4.711          0.0      0.000             0.000     43.263       67.262          5.905      3.957      123.962            19.867         0.626          37.051    760.953           459.058        0.0      0.000        0.525      8.253             7.728  1538.656           0.0         0.0  1253270.056
 
-
 To get the compiled residential loads in Alameda County CA in CSV format, the command
 
     loads CA Alameda residential --format=csv
@@ -49,8 +48,7 @@ outputs the following
     2018-12-31 22:00:00+00:00,37.711,1.033,-5.342,2.649,36.051,41.393,7.904,0.0,38.068,45.972
     2018-12-31 23:00:00+00:00,38.226,1.382,-3.725,1.664,37.548,41.272,8.399,0.0,30.819,39.218
 
-
-Caveats:
+# Caveats
 
 * Compiling data can be time consuming. To help with performance data is cached
   locally in the package library. 
@@ -66,6 +64,11 @@ import pandas as pd
 # pylint: disable=unused-import
 from loads.resstock import RESstock
 from loads.residential import Residential
+from loads.comstock import COMstock
+from loads.commercial import Commercial
+from loads.industry import Industry
+from loads.agriculture import Agriculture
+from loads.weather import Weather
 
 E_OK = 0
 """Exit code on success"""
@@ -79,11 +82,11 @@ E_SYNTAX = 2
 def main(*args:list[str]) -> int:
     """RESstock form accessor main command line processor
 
-    Argument:
+    # Argument
 
     - `*args`: command line arguments (`None` is `sys.argv`)
 
-    Returns:
+    # Returns
 
     - `int`: return/exit code
     """
@@ -103,7 +106,7 @@ def main(*args:list[str]) -> int:
         parser.add_argument("state")
         parser.add_argument("county")
         parser.add_argument("sector",
-            choices=["residential","commercial","industrial","agricultural","public","weather"]
+            choices=["residential","commercial","industrial","agricultural","weather"]
             )
         parser.add_argument("-y","--year",
             type=int,
@@ -141,10 +144,29 @@ def main(*args:list[str]) -> int:
 
         # get data
         match args.sector:
+ 
             case "residential":
                 source = (RESstock if args.building_type else Residential)
                 kwargs = source.makeargs(**vars(args))
                 data = source(**kwargs).round(args.precision)
+ 
+            case "commercial":
+                source = (COMstock if args.building_type else Commercial)
+                kwargs = source.makeargs(**vars(args))
+                data = source(**kwargs).round(args.precision)
+ 
+            case "industrial":
+                kwargs = Industry.makeargs(**vars(args))
+                data = Industry(**kwargs).round(args.precision)
+ 
+            case "agricultural":
+                kwargs = Agriculture.makeargs(**vars(args))
+                data = Agriculture(**kwargs).round(args.precision)
+ 
+            case "weather":
+                kwargs = Weather.makeargs(**vars(args))
+                data = Weather(**kwargs).round(args.precision)
+ 
             case "_":
                 raise ValueError(f"{args.sector=} is invalid")
 

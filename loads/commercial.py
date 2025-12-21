@@ -4,7 +4,7 @@
 The commercial load data frame collects and consolidates `COMstock` data. Floor areas are
 obtained from `Floorarea` data to scale loads for the specified year.
 
-Example:
+# Example
 
 To get the commercial building load data for Alameda County CA, use the following command
 
@@ -102,7 +102,7 @@ class Commercial(pd.DataFrame):
         ):
         """Construct building types data frame
 
-        Arguments:
+        # Arguments
 
         - `state`: specify the state abbreviation (required)
 
@@ -187,6 +187,6 @@ class Commercial(pd.DataFrame):
 
     @classmethod
     def makeargs(cls,**kwargs):
-        """Return dict of accepted kwargs by this class constructor"""
+        """@private Return dict of accepted kwargs by this class constructor"""
         return {x:y for x,y in kwargs.items()
             if x in cls.__init__.__annotations__}

@@ -8,7 +8,7 @@ residential, `{'SA','SD','SM','LM','MH'}` for single-family attached,
 single-family detached, small multi-family, large multi-family, and
 mobile-home. Values are given in W/unit.
 
-Example:
+# Example
 
 To get the detached single-family home load data for Alameda CA use the command
 
@@ -138,7 +138,7 @@ class RESstock(pd.DataFrame):
         ):
         """Construct a RESstock data frame
 
-        Arguments:
+        # Arguments
 
         - `state`: specifies the state (e.g., "CA")
 
@@ -224,6 +224,6 @@ class RESstock(pd.DataFrame):
 
     @classmethod
     def makeargs(cls,**kwargs):
-        """Return dict of accepted kwargs by this class constructor"""
+        """@private Return dict of accepted kwargs by this class constructor"""
         return {x:y for x,y in kwargs.items()
             if x in cls.__init__.__annotations__}

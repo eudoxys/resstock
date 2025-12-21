@@ -1,6 +1,6 @@
 """Housing units
 
-Example:
+# Example
 
 The number of housing units in Alameda County CA in 2020 is obtained with the code
 
@@ -36,7 +36,7 @@ class Units(float):
         ):
         """Load housing units from Census Bureau
 
-        Arguments:
+        # Arguments
 
         - `state`: state for which to read data
 

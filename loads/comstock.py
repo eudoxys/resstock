@@ -8,7 +8,7 @@ Commercial building types are coded using three characters `C`,
 `{'F','H','L','O','E','R','W'}` (food, health, lodging, office,
 education, retail, and warehouse). Load values are given in W/sf.
 
-Example:
+# Example
 
 To get the large office load data for Alameda CA use the command
 
@@ -118,7 +118,7 @@ class COMstock(pd.DataFrame):
         ):
         """Construct a COMstock data frame
 
-        Arguments:
+        # Arguments
 
         - `state`: specifies the state (e.g., "CA")
 
@@ -205,6 +205,6 @@ class COMstock(pd.DataFrame):
 
     @classmethod
     def makeargs(cls,**kwargs):
-        """Return dict of accepted kwargs by this class constructor"""
+        """@private Return dict of accepted kwargs by this class constructor"""
         return {x:y for x,y in kwargs.items()
             if x in cls.__init__.__annotations__}

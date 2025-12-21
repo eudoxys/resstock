@@ -2,7 +2,7 @@
 
 Access the weather corresponding to the load data.
 
-Example:
+# Example
 
 To get the weather data for Alameda County CA use the command
 
@@ -44,6 +44,8 @@ class Weather(pd.DataFrame):
         county:str,
         ):
         """Construct weather data frame for a county
+
+        # Arguments
 
         - `state`: specify the state abbreviation (required)
 
@@ -100,3 +102,9 @@ class Weather(pd.DataFrame):
         # move year-end data to beginning
         data.index = pd.DatetimeIndex([str(x).replace("2019","2018") for x in data.index])
         super().__init__(data.sort_index())
+
+    @classmethod
+    def makeargs(cls,**kwargs):
+        """@private Return dict of accepted kwargs by this class constructor"""
+        return {x:y for x,y in kwargs.items()
+            if x in cls.__init__.__annotations__}

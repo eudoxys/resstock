@@ -3,7 +3,7 @@
 The residential load data frame collects and consolidates `RESstock` data. Housing units are
 obtained from `Units` data to scale loads for the specified year.
 
-Example:
+# Example
 
 The residential load data for Alameda County CA is obtained using the command
 
@@ -131,7 +131,7 @@ class Residential(pd.DataFrame):
         ):
         """Construct building types data frame
 
-        Arguments:
+        # Arguments
 
         - `state`: specify the state abbreviation (required)
 
@@ -206,6 +206,6 @@ class Residential(pd.DataFrame):
 
     @classmethod
     def makeargs(cls,**kwargs):
-        """Return dict of accepted kwargs by this class constructor"""
+        """@private Return dict of accepted kwargs by this class constructor"""
         return {x:y for x,y in kwargs.items()
             if x in cls.__init__.__annotations__}

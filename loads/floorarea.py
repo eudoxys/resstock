@@ -12,7 +12,7 @@ one COMstock building types matches, the split is weighted equally. Floor
 areas that do not match any COMstock building type are not given any
 (i.e., `BUILDING_TYPE` is blank).
 
-Example:
+# Example
 
 Get the commercial building floor areas for Alameda County CA using the code
 
@@ -82,7 +82,7 @@ class Floorarea(pd.DataFrame):
         ):
         """Commercial floor area data frame constructor
 
-        Arguments:
+        # Arguments
 
         - `state`: specify the state abbreviation (required)
 
