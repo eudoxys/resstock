@@ -38,10 +38,15 @@
   <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
 </svg>                &nbsp;loads</a>
 
-            <img src="https://github.com/eudoxys/.github/blob/main/eudoxys_banner.png?raw=true" class="logo" alt="project logo"/>
-
+<a href="https://www.eudoxys.com/">            <img src="https://github.com/eudoxys/.github/blob/main/eudoxys_banner.png?raw=true" class="logo" alt="project logo"/>
+</a>
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
+
+            <h2>Contents</h2>
+            <ul>
+  <li><a href="#example">Example</a></li>
+</ul>
 
 
 
@@ -55,9 +60,6 @@
                         </li>
                         <li>
                                 <a class="variable" href="#Commercial.COLLECT">COLLECT</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#Commercial.makeargs">makeargs</a>
                         </li>
                 </ul>
 
@@ -83,7 +85,7 @@
 <p>The commercial load data frame collects and consolidates <code>COMstock</code> data. Floor areas are
 obtained from <code>Floorarea</code> data to scale loads for the specified year.</p>
 
-<p>Example:</p>
+<h1 id="example">Example</h1>
 
 <p>To get the commercial building load data for Alameda County CA, use the following command</p>
 
@@ -120,7 +122,7 @@ print(Commercial(state="CA",county="Alameda"))
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="sd">The commercial load data frame collects and consolidates `COMstock` data. Floor areas are</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="sd">obtained from `Floorarea` data to scale loads for the specified year.</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="sd">Example:</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="sd"># Example</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="sd">To get the commercial building load data for Alameda County CA, use the following command</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
@@ -218,7 +220,7 @@ print(Commercial(state="CA",county="Alameda"))
 </span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="p">):</span>
 </span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct building types data frame</span>
 </span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        Arguments:</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        # Arguments</span>
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>
 </span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">        - `state`: specify the state abbreviation (required)</span>
 </span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>
@@ -303,7 +305,7 @@ print(Commercial(state="CA",county="Alameda"))
 </span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>
 </span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>    <span class="nd">@classmethod</span>
 </span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">makeargs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;@private Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
 </span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 </span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">}</span>
 </span></pre></div>
@@ -387,7 +389,7 @@ print(Commercial(state="CA",county="Alameda"))
 </span><span id="Commercial-103"><a href="#Commercial-103"><span class="linenos">103</span></a>        <span class="p">):</span>
 </span><span id="Commercial-104"><a href="#Commercial-104"><span class="linenos">104</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct building types data frame</span>
 </span><span id="Commercial-105"><a href="#Commercial-105"><span class="linenos">105</span></a>
-</span><span id="Commercial-106"><a href="#Commercial-106"><span class="linenos">106</span></a><span class="sd">        Arguments:</span>
+</span><span id="Commercial-106"><a href="#Commercial-106"><span class="linenos">106</span></a><span class="sd">        # Arguments</span>
 </span><span id="Commercial-107"><a href="#Commercial-107"><span class="linenos">107</span></a>
 </span><span id="Commercial-108"><a href="#Commercial-108"><span class="linenos">108</span></a><span class="sd">        - `state`: specify the state abbreviation (required)</span>
 </span><span id="Commercial-109"><a href="#Commercial-109"><span class="linenos">109</span></a>
@@ -472,7 +474,7 @@ print(Commercial(state="CA",county="Alameda"))
 </span><span id="Commercial-188"><a href="#Commercial-188"><span class="linenos">188</span></a>
 </span><span id="Commercial-189"><a href="#Commercial-189"><span class="linenos">189</span></a>    <span class="nd">@classmethod</span>
 </span><span id="Commercial-190"><a href="#Commercial-190"><span class="linenos">190</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">makeargs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="Commercial-191"><a href="#Commercial-191"><span class="linenos">191</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
+</span><span id="Commercial-191"><a href="#Commercial-191"><span class="linenos">191</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;@private Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
 </span><span id="Commercial-192"><a href="#Commercial-192"><span class="linenos">192</span></a>        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 </span><span id="Commercial-193"><a href="#Commercial-193"><span class="linenos">193</span></a>            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">}</span>
 </span></pre></div>
@@ -507,7 +509,7 @@ both electric and non-electric loads.  Values are delivered both in MW.</p>
 </span><span id="Commercial.__init__-103"><a href="#Commercial.__init__-103"><span class="linenos">103</span></a>        <span class="p">):</span>
 </span><span id="Commercial.__init__-104"><a href="#Commercial.__init__-104"><span class="linenos">104</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct building types data frame</span>
 </span><span id="Commercial.__init__-105"><a href="#Commercial.__init__-105"><span class="linenos">105</span></a>
-</span><span id="Commercial.__init__-106"><a href="#Commercial.__init__-106"><span class="linenos">106</span></a><span class="sd">        Arguments:</span>
+</span><span id="Commercial.__init__-106"><a href="#Commercial.__init__-106"><span class="linenos">106</span></a><span class="sd">        # Arguments</span>
 </span><span id="Commercial.__init__-107"><a href="#Commercial.__init__-107"><span class="linenos">107</span></a>
 </span><span id="Commercial.__init__-108"><a href="#Commercial.__init__-108"><span class="linenos">108</span></a><span class="sd">        - `state`: specify the state abbreviation (required)</span>
 </span><span id="Commercial.__init__-109"><a href="#Commercial.__init__-109"><span class="linenos">109</span></a>
@@ -594,7 +596,7 @@ both electric and non-electric loads.  Values are delivered both in MW.</p>
 
             <div class="docstring"><p>Construct building types data frame</p>
 
-<p>Arguments:</p>
+<h1 id="arguments">Arguments</h1>
 
 <ul>
 <li><p><code>state</code>: specify the state abbreviation (required)</p></li>
@@ -623,31 +625,6 @@ computing total electric and non-electric loads in MW.</p>
     <a class="headerlink" href="#Commercial.COLLECT"></a>
     
             <div class="docstring"><p>Mapping of COMstock data columns to Commercial data columns</p>
-</div>
-
-
-                            </div>
-                            <div id="Commercial.makeargs" class="classattr">
-                                        <input id="Commercial.makeargs-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator decorator-classmethod">@classmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">makeargs</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
-
-                <label class="view-source-button" for="Commercial.makeargs-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#Commercial.makeargs"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Commercial.makeargs-189"><a href="#Commercial.makeargs-189"><span class="linenos">189</span></a>    <span class="nd">@classmethod</span>
-</span><span id="Commercial.makeargs-190"><a href="#Commercial.makeargs-190"><span class="linenos">190</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">makeargs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="Commercial.makeargs-191"><a href="#Commercial.makeargs-191"><span class="linenos">191</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
-</span><span id="Commercial.makeargs-192"><a href="#Commercial.makeargs-192"><span class="linenos">192</span></a>        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-</span><span id="Commercial.makeargs-193"><a href="#Commercial.makeargs-193"><span class="linenos">193</span></a>            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">}</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Return dict of accepted kwargs by this class constructor</p>
 </div>
 
 

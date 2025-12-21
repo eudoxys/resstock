@@ -38,10 +38,15 @@
   <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
 </svg>                &nbsp;loads</a>
 
-            <img src="https://github.com/eudoxys/.github/blob/main/eudoxys_banner.png?raw=true" class="logo" alt="project logo"/>
-
+<a href="https://www.eudoxys.com/">            <img src="https://github.com/eudoxys/.github/blob/main/eudoxys_banner.png?raw=true" class="logo" alt="project logo"/>
+</a>
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
+
+            <h2>Contents</h2>
+            <ul>
+  <li><a href="#example">Example</a></li>
+</ul>
 
 
 
@@ -61,9 +66,6 @@
                         </li>
                         <li>
                                 <a class="variable" href="#COMstock.BUILDING_TYPES">BUILDING_TYPES</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#COMstock.makeargs">makeargs</a>
                         </li>
                 </ul>
 
@@ -94,7 +96,7 @@ building data.</p>
 <code>{'F','H','L','O','E','R','W'}</code> (food, health, lodging, office,
 education, retail, and warehouse). Load values are given in W/sf.</p>
 
-<p>Example:</p>
+<h1 id="example">Example</h1>
 
 <p>To get the large office load data for Alameda CA use the command</p>
 
@@ -134,7 +136,7 @@ education, retail, and warehouse). Load values are given in W/sf.</p>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="sd">`{&#39;F&#39;,&#39;H&#39;,&#39;L&#39;,&#39;O&#39;,&#39;E&#39;,&#39;R&#39;,&#39;W&#39;}` (food, health, lodging, office,</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="sd">education, retail, and warehouse). Load values are given in W/sf.</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">Example:</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd"># Example</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">To get the large office load data for Alameda CA use the command</span>
 </span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>
@@ -244,7 +246,7 @@ education, retail, and warehouse). Load values are given in W/sf.</p>
 </span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="p">):</span>
 </span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a COMstock data frame</span>
 </span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">        Arguments:</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">        # Arguments</span>
 </span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>
 </span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a><span class="sd">        - `state`: specifies the state (e.g., &quot;CA&quot;)</span>
 </span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>
@@ -331,7 +333,7 @@ education, retail, and warehouse). Load values are given in W/sf.</p>
 </span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>
 </span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>    <span class="nd">@classmethod</span>
 </span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">makeargs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;@private Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
 </span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 </span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">}</span>
 </span></pre></div>
@@ -419,7 +421,7 @@ education, retail, and warehouse). Load values are given in W/sf.</p>
 </span><span id="COMstock-119"><a href="#COMstock-119"><span class="linenos">119</span></a>        <span class="p">):</span>
 </span><span id="COMstock-120"><a href="#COMstock-120"><span class="linenos">120</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a COMstock data frame</span>
 </span><span id="COMstock-121"><a href="#COMstock-121"><span class="linenos">121</span></a>
-</span><span id="COMstock-122"><a href="#COMstock-122"><span class="linenos">122</span></a><span class="sd">        Arguments:</span>
+</span><span id="COMstock-122"><a href="#COMstock-122"><span class="linenos">122</span></a><span class="sd">        # Arguments</span>
 </span><span id="COMstock-123"><a href="#COMstock-123"><span class="linenos">123</span></a>
 </span><span id="COMstock-124"><a href="#COMstock-124"><span class="linenos">124</span></a><span class="sd">        - `state`: specifies the state (e.g., &quot;CA&quot;)</span>
 </span><span id="COMstock-125"><a href="#COMstock-125"><span class="linenos">125</span></a>
@@ -506,7 +508,7 @@ education, retail, and warehouse). Load values are given in W/sf.</p>
 </span><span id="COMstock-206"><a href="#COMstock-206"><span class="linenos">206</span></a>
 </span><span id="COMstock-207"><a href="#COMstock-207"><span class="linenos">207</span></a>    <span class="nd">@classmethod</span>
 </span><span id="COMstock-208"><a href="#COMstock-208"><span class="linenos">208</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">makeargs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="COMstock-209"><a href="#COMstock-209"><span class="linenos">209</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
+</span><span id="COMstock-209"><a href="#COMstock-209"><span class="linenos">209</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;@private Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
 </span><span id="COMstock-210"><a href="#COMstock-210"><span class="linenos">210</span></a>        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 </span><span id="COMstock-211"><a href="#COMstock-211"><span class="linenos">211</span></a>            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">}</span>
 </span></pre></div>
@@ -541,7 +543,7 @@ reflect the actual floor area in any given year.</p>
 </span><span id="COMstock.__init__-119"><a href="#COMstock.__init__-119"><span class="linenos">119</span></a>        <span class="p">):</span>
 </span><span id="COMstock.__init__-120"><a href="#COMstock.__init__-120"><span class="linenos">120</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a COMstock data frame</span>
 </span><span id="COMstock.__init__-121"><a href="#COMstock.__init__-121"><span class="linenos">121</span></a>
-</span><span id="COMstock.__init__-122"><a href="#COMstock.__init__-122"><span class="linenos">122</span></a><span class="sd">        Arguments:</span>
+</span><span id="COMstock.__init__-122"><a href="#COMstock.__init__-122"><span class="linenos">122</span></a><span class="sd">        # Arguments</span>
 </span><span id="COMstock.__init__-123"><a href="#COMstock.__init__-123"><span class="linenos">123</span></a>
 </span><span id="COMstock.__init__-124"><a href="#COMstock.__init__-124"><span class="linenos">124</span></a><span class="sd">        - `state`: specifies the state (e.g., &quot;CA&quot;)</span>
 </span><span id="COMstock.__init__-125"><a href="#COMstock.__init__-125"><span class="linenos">125</span></a>
@@ -630,7 +632,7 @@ reflect the actual floor area in any given year.</p>
 
             <div class="docstring"><p>Construct a COMstock data frame</p>
 
-<p>Arguments:</p>
+<h1 id="arguments">Arguments</h1>
 
 <ul>
 <li><p><code>state</code>: specifies the state (e.g., "CA")</p></li>
@@ -683,31 +685,6 @@ entire state</p></li>
     <a class="headerlink" href="#COMstock.BUILDING_TYPES"></a>
     
             <div class="docstring"><p>COMstock building type codes</p>
-</div>
-
-
-                            </div>
-                            <div id="COMstock.makeargs" class="classattr">
-                                        <input id="COMstock.makeargs-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator decorator-classmethod">@classmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">makeargs</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
-
-                <label class="view-source-button" for="COMstock.makeargs-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#COMstock.makeargs"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="COMstock.makeargs-207"><a href="#COMstock.makeargs-207"><span class="linenos">207</span></a>    <span class="nd">@classmethod</span>
-</span><span id="COMstock.makeargs-208"><a href="#COMstock.makeargs-208"><span class="linenos">208</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">makeargs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="COMstock.makeargs-209"><a href="#COMstock.makeargs-209"><span class="linenos">209</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
-</span><span id="COMstock.makeargs-210"><a href="#COMstock.makeargs-210"><span class="linenos">210</span></a>        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-</span><span id="COMstock.makeargs-211"><a href="#COMstock.makeargs-211"><span class="linenos">211</span></a>            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">}</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Return dict of accepted kwargs by this class constructor</p>
 </div>
 
 

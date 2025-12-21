@@ -38,10 +38,15 @@
   <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
 </svg>                &nbsp;loads</a>
 
-            <img src="https://github.com/eudoxys/.github/blob/main/eudoxys_banner.png?raw=true" class="logo" alt="project logo"/>
-
+<a href="https://www.eudoxys.com/">            <img src="https://github.com/eudoxys/.github/blob/main/eudoxys_banner.png?raw=true" class="logo" alt="project logo"/>
+</a>
             <input type="search" placeholder="Search..." role="searchbox" aria-label="search"
                    pattern=".+" required>
+
+            <h2>Contents</h2>
+            <ul>
+  <li><a href="#example">Example</a></li>
+</ul>
 
 
 
@@ -55,9 +60,6 @@
                         </li>
                         <li>
                                 <a class="variable" href="#Residential.COLLECT">COLLECT</a>
-                        </li>
-                        <li>
-                                <a class="function" href="#Residential.makeargs">makeargs</a>
                         </li>
                 </ul>
 
@@ -83,7 +85,7 @@
 <p>The residential load data frame collects and consolidates <code>RESstock</code> data. Housing units are
 obtained from <code>Units</code> data to scale loads for the specified year.</p>
 
-<p>Example:</p>
+<h1 id="example">Example</h1>
 
 <p>The residential load data for Alameda County CA is obtained using the command</p>
 
@@ -120,7 +122,7 @@ timestamp                                    ...
 </span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="sd">The residential load data frame collects and consolidates `RESstock` data. Housing units are</span>
 </span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="sd">obtained from `Units` data to scale loads for the specified year.</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="sd">Example:</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="sd"># Example</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
 </span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="sd">The residential load data for Alameda County CA is obtained using the command</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
@@ -248,7 +250,7 @@ timestamp                                    ...
 </span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>        <span class="p">):</span>
 </span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct building types data frame</span>
 </span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        Arguments:</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a><span class="sd">        # Arguments</span>
 </span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>
 </span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a><span class="sd">        - `state`: specify the state abbreviation (required)</span>
 </span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>
@@ -323,7 +325,7 @@ timestamp                                    ...
 </span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>
 </span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>    <span class="nd">@classmethod</span>
 </span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">makeargs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;@private Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
 </span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 </span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">}</span>
 </span></pre></div>
@@ -436,7 +438,7 @@ timestamp                                    ...
 </span><span id="Residential-132"><a href="#Residential-132"><span class="linenos">132</span></a>        <span class="p">):</span>
 </span><span id="Residential-133"><a href="#Residential-133"><span class="linenos">133</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct building types data frame</span>
 </span><span id="Residential-134"><a href="#Residential-134"><span class="linenos">134</span></a>
-</span><span id="Residential-135"><a href="#Residential-135"><span class="linenos">135</span></a><span class="sd">        Arguments:</span>
+</span><span id="Residential-135"><a href="#Residential-135"><span class="linenos">135</span></a><span class="sd">        # Arguments</span>
 </span><span id="Residential-136"><a href="#Residential-136"><span class="linenos">136</span></a>
 </span><span id="Residential-137"><a href="#Residential-137"><span class="linenos">137</span></a><span class="sd">        - `state`: specify the state abbreviation (required)</span>
 </span><span id="Residential-138"><a href="#Residential-138"><span class="linenos">138</span></a>
@@ -511,7 +513,7 @@ timestamp                                    ...
 </span><span id="Residential-207"><a href="#Residential-207"><span class="linenos">207</span></a>
 </span><span id="Residential-208"><a href="#Residential-208"><span class="linenos">208</span></a>    <span class="nd">@classmethod</span>
 </span><span id="Residential-209"><a href="#Residential-209"><span class="linenos">209</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">makeargs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="Residential-210"><a href="#Residential-210"><span class="linenos">210</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
+</span><span id="Residential-210"><a href="#Residential-210"><span class="linenos">210</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;@private Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
 </span><span id="Residential-211"><a href="#Residential-211"><span class="linenos">211</span></a>        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
 </span><span id="Residential-212"><a href="#Residential-212"><span class="linenos">212</span></a>            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">}</span>
 </span></pre></div>
@@ -546,7 +548,7 @@ both electric and non-electric loads.  Values are delivered both in MW.</p>
 </span><span id="Residential.__init__-132"><a href="#Residential.__init__-132"><span class="linenos">132</span></a>        <span class="p">):</span>
 </span><span id="Residential.__init__-133"><a href="#Residential.__init__-133"><span class="linenos">133</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct building types data frame</span>
 </span><span id="Residential.__init__-134"><a href="#Residential.__init__-134"><span class="linenos">134</span></a>
-</span><span id="Residential.__init__-135"><a href="#Residential.__init__-135"><span class="linenos">135</span></a><span class="sd">        Arguments:</span>
+</span><span id="Residential.__init__-135"><a href="#Residential.__init__-135"><span class="linenos">135</span></a><span class="sd">        # Arguments</span>
 </span><span id="Residential.__init__-136"><a href="#Residential.__init__-136"><span class="linenos">136</span></a>
 </span><span id="Residential.__init__-137"><a href="#Residential.__init__-137"><span class="linenos">137</span></a><span class="sd">        - `state`: specify the state abbreviation (required)</span>
 </span><span id="Residential.__init__-138"><a href="#Residential.__init__-138"><span class="linenos">138</span></a>
@@ -623,7 +625,7 @@ both electric and non-electric loads.  Values are delivered both in MW.</p>
 
             <div class="docstring"><p>Construct building types data frame</p>
 
-<p>Arguments:</p>
+<h1 id="arguments">Arguments</h1>
 
 <ul>
 <li><p><code>state</code>: specify the state abbreviation (required)</p></li>
@@ -653,31 +655,6 @@ or non-electric load.</p>
     <a class="headerlink" href="#Residential.COLLECT"></a>
     
             <div class="docstring"><p>Mapping of <code>RESstock</code> columns to <code><a href="#Residential">Residential</a></code> columns</p>
-</div>
-
-
-                            </div>
-                            <div id="Residential.makeargs" class="classattr">
-                                        <input id="Residential.makeargs-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-                    <div class="decorator decorator-classmethod">@classmethod</div>
-
-        <span class="def">def</span>
-        <span class="name">makeargs</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">cls</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
-
-                <label class="view-source-button" for="Residential.makeargs-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#Residential.makeargs"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Residential.makeargs-208"><a href="#Residential.makeargs-208"><span class="linenos">208</span></a>    <span class="nd">@classmethod</span>
-</span><span id="Residential.makeargs-209"><a href="#Residential.makeargs-209"><span class="linenos">209</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">makeargs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="Residential.makeargs-210"><a href="#Residential.makeargs-210"><span class="linenos">210</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return dict of accepted kwargs by this class constructor&quot;&quot;&quot;</span>
-</span><span id="Residential.makeargs-211"><a href="#Residential.makeargs-211"><span class="linenos">211</span></a>        <span class="k">return</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-</span><span id="Residential.makeargs-212"><a href="#Residential.makeargs-212"><span class="linenos">212</span></a>            <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">}</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Return dict of accepted kwargs by this class constructor</p>
 </div>
 
 
